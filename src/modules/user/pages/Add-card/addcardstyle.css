@@ -1,0 +1,34 @@
+.orer-details label
+{
+  font-size: 14.5px;
+  font-weight: 400 !important;
+}
+
+.theme-highlight-div .listt
+{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: solid 1px #fff;
+    display: block;
+    font-size: 20px !important;
+    font-weight: 500 !important;
+}
+ table thead tr th{
+    background-color: #FDEBE5 !important;
+    border-radius: 0px !important;
+    border:none !important;
+    outline: none !important;
+}
+
+ table thead tr th{
+   border:none !important;
+   padding: 10px
+}
+ table thead tr th:first-child{
+   border-top-left-radius: 10px;
+   border-bottom-left-radius: 10px;
+}
+.font-30
+{
+  font-size: 22px !important;
+}

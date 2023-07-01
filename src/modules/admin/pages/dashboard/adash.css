@@ -1,0 +1,87 @@
+.admintopmenu
+{
+    background-color: #FDEBE5;
+    border-radius: 7px;
+    padding: 10px 20px;
+    
+}
+.admintopmenu a
+{
+    color: #333 !important;
+    text-decoration: none !important;
+    font-weight: 700;
+}
+
+#admin .main-card {
+    overflow: auto;
+    width: 100%;
+  }
+
+#admin .main-card table tr .w80{
+    width: 100px;
+    border-right: solid 1px #ced4da !important;
+  }
+#admin .main-card table tr .w150{
+    width: 150px;
+    border-right: solid 1px #ced4da !important;
+  }
+#admin .main-card table tr .w220{
+    width: 220px;
+    border-right: solid 1px #ced4da !important;
+  }
+#admin .main-card table tr .w270{
+    width: 270px;
+    border-right: solid 1px #ced4da !important;
+  }
+  #admin .main-card table tr .w350{
+    
+    width: 350px;
+    border-right: solid 1px #ced4da !important;
+  }
+  #admin .main-card table tr .w250{
+    width: 250px;
+    border-right: solid 1px #ced4da !important;
+  }
+
+#admin tr:nth-child(odd) {
+    background-color: #ededed;
+}
+
+#admin .main-card table {
+    width: 2200px;
+   
+  }
+
+  #admin .main-card table tr th {
+    font-size: 15px !important;
+  }
+
+#admin .Dashboardsec
+{
+    overflow: auto;
+}
+
+#admin table thead tr th:first-child
+{
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    border-left: solid 1px #ced4da !important;
+    
+}
+#admin table thead tr th:last-child
+{
+    border-right: solid 1px #ced4da !important;
+}
+#admin table thead tr td
+{
+   font-size: 15px ;
+}
+
+#admin .edit-btn
+{
+    background-color: transparent !important;
+    border:none !important;
+    color: white !important;
+    font-size: 20px;
+    line-height: 14px !important;
+}

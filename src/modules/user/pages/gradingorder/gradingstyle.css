@@ -1,0 +1,99 @@
+
+.Dashboardsec {
+    background-color: white;
+    border-radius: 10px;
+    padding: 25px 40px;
+    margin: 30px;
+}
+
+
+
+
+.grdeScreenouter
+{
+   min-height: 200px;
+   border-right: 1px solid rgba(0, 0, 0, .2);
+   margin-top: 30px;
+   margin-bottom: 30px;
+
+}
+
+.form-data
+{
+    width: 70%;
+}
+.form-data label, 
+.disable-form label
+{
+    margin-bottom: 7px;
+    font-weight: 700;
+}
+
+.form-data .form-group
+{
+    margin-bottom: 20px;
+}
+.form-data .form-group p
+{
+    color: 9F958C !important;
+    font-size: 12.5px !important;
+    font-weight: 400;
+}
+.form-data .form-group ul li label
+{
+    margin-left: 10px;
+    font-weight: 400 !important;
+    margin-top: 15px !important;
+    color: #ccc;
+}
+
+
+input[type="radio"]:checked+label
+{
+    color: coral !important;
+    font-weight: 700 !important;
+}
+
+input[type='radio']  {
+    accent-color: #F0592A;
+}
+.right-content
+{
+    padding: 0px 0px 0px 80px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.right-content .disable-form
+{
+   min-height: 50px;
+   border-radius: 5px;
+   width: 100%;
+}
+.disable-form .form-group
+{
+    margin-bottom: 10px;
+}
+.highlightbox
+{
+background: #FDEBE5;
+border-radius: 12px;
+padding: 20px 30px;
+margin-top: 40px;
+}
+.highlightbtn
+{
+    background: linear-gradient(163.13deg, #F0592A 11.64%, #222222 156.58%);
+    border-radius: 8px;
+    height: 40px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    margin-top: 20px;
+    display: block;
+    
+}
+
+
+

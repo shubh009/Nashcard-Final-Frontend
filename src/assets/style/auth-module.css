@@ -1,0 +1,165 @@
+.header {
+    min-height: 60px;
+    width: 100%;
+    background-color: white;
+
+}
+
+.navbar-text {
+    font-size: 21px;
+    margin-left: 20px;
+
+}
+
+.navbar-text a {
+    text-decoration: none !important;
+}
+
+.navbar-text .signup-btn {
+    padding: 5px 22px !important;
+    border-radius: 20px !important;
+    color: white;
+    font-size: 20px !important;
+}
+
+.login-Outer {
+    background-color: white;
+    padding-top: 70px;
+    text-align: center;
+    align-items: center;
+
+}
+
+.signup-Outer {
+    background-color: white;
+    padding-top: 30px;
+    text-align: center;
+    align-items: center;
+}
+
+.login-left h3 {
+    font-size: 30px !important;
+    margin-top: 45px;
+}
+
+.login-left p {
+    font-size: 16px !important;
+}
+
+.login-header .heading {
+    font-size: 25px;
+    font-weight: 700;
+    padding-top: 15px;
+    display: block;
+
+}
+
+.login-header p {
+    font-size: 15px;
+    color: #333;
+    margin-top: 10px;
+}
+
+.login-form .form-group,
+.login-formm .form-group {
+    margin-bottom: 20px;
+}
+
+.login-form .login-btn,
+.login-formm .login-btn {
+    color: #fff;
+    background-color: #F1592A !important;
+    border: solid 1px #F1592A !important;
+    border-radius: 100px;
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 15px;
+    transition: border-color .15s ease-in-out,
+        box-shadow .15s ease-in-out;
+    height: 55px !important;
+}
+
+.login-form .login-btn:hover {
+    background-color: #ec7f5e;
+    border-color: #F1692E;
+
+}
+
+.text-theme {
+    color: #F1592A;
+}
+
+.bg-theme {
+    background-color: #F1592A !important;
+}
+
+.text-black {
+    color: black !important;
+}
+
+
+
+.login-form a,
+.lgin-formm a {
+    text-decoration: none;
+}
+
+.login-right-image {
+    height: 100vh;
+    width: 100%;
+}
+
+.login-left {
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+    align-items: center;
+}
+
+
+.login-left .loginPage-logo,
+.forgot-left .loginPage-logo {
+    width: 32%;
+}
+
+.signup-left .loginPage-logo {
+    width: 28% !important;
+}
+
+.login-form {
+    margin-top: 40px;
+    width: 380px;
+    min-height: 40px;
+    margin-left: 180px;
+}
+
+.login-formm {
+    margin-top: 40px;
+    width: 100%;
+    min-height: 40px;
+
+}
+
+.auth-textbox {
+    height: 50px !important;
+    border-radius: 50px !important;
+    background-color: #f6f6f6 !important;
+    border: solid 1px #f6f6f6 !important;
+    text-indent: 30px;
+}
+
+.login-form ::placeholder,
+.login-formm ::placeholder {
+    color: #000 !important;
+
+    font-size: 15px !important;
+    opacity: .5 !important;
+}
+
+.forgot-Outer {
+    margin-top: 50px;
+    border-radius: 10px;
+    background-color: white;
+    padding: 30px;
+}

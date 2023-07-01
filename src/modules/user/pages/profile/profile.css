@@ -1,0 +1,18 @@
+
+
+.profileI .Dashboardsec
+{
+    background: linear-gradient(to bottom, #FDEBE5 0%, #FDEBE5 33%,white 66%, white 100%) !important;
+    min-height: 300px;
+    
+}
+
+.profile-tab-hz
+{
+   margin-top: 30px;
+   margin-bottom: 30px;
+}
+.form-control
+{
+    height: 44px !important;
+}

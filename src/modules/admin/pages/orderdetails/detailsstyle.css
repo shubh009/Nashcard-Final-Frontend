@@ -1,0 +1,191 @@
+#admin .statbox
+{
+    border: solid 1px #e5e5e5;
+    border-radius: 10px;
+    padding: 8px 14px;
+}
+#admin .form-group
+{
+    margin-bottom: 18px !important;
+}
+
+.modal-body .form-group
+{
+    margin-bottom: 18px !important;
+}
+
+.modal-body
+{
+   padding: 15px 30px !important;
+}
+
+#admin .statebox
+{
+    border: solid 1px #e5e5e5;
+    border-radius: 10px;
+    padding: 12px 20px;
+
+}
+
+ .modal-body .statebox
+{
+    border: solid 1px #e5e5e5;
+    border-radius: 10px;
+    padding: 12px 20px;
+
+}
+
+ .modal-body .highlightboxbox
+{
+    border: solid 1px #F1592A;
+    border-radius: 10px;
+    padding: 12px 20px;
+    background-color: #FDEBE5;
+    text-align: center;
+}
+ .modal-body .highlightboxbox p
+{
+    color: #F1592A;
+}
+.modal-body .highlightboxbox label
+{
+    font-weight: 500 !important;
+}
+
+ .Ncount
+{
+   font-size: 25px;
+   font-weight: 700;
+}
+
+
+#admin .topbtn
+{
+    border-radius: 7px;
+    padding: 8px 15px;
+    background-color: #F1592A;
+    text-decoration: none;
+    color: white;
+    float: right;
+}
+
+#admin .topbtn:hover
+{
+    color: white;
+}
+
+#admin .dltbtn
+{
+    border-radius: 7px;
+    padding: 8px 15px;
+    background-color: rgb(220,53,69);
+    text-decoration: none;
+    color: white;
+    float: right;
+    text-align: center
+}
+#admin .textareap {
+    resize: vertical;
+    height: 120px !important;
+    width: 100%;
+}
+#admin .order-timeline{
+   width: 100%;
+   background-color: white;
+   min-height: 60px;
+}
+.order-timeline .icon
+{
+  height: 40px;
+  width: 40px;
+  border-radius: 7px;
+  text-align: center;
+  padding-top: 5px;
+  background-color: #F1592A;
+  color: lightcoral;
+}
+.modal-body .form-group label
+{
+    font-weight: 700;
+}
+
+.modal-body {
+    max-height: 600px;
+    overflow: auto;
+    height: auto;
+}
+
+input[type="radio"] + label
+{
+    font-weight: 500 !important;
+}
+
+input[type="radio"]:checked+label
+{
+    color: coral !important;
+    font-weight: 700 !important;
+}
+
+input[type='radio']  {
+    accent-color: #F0592A;
+    margin-right: 10px;
+}
+
+@media (min-width: 992px)
+{
+    .modal-lg, .modal-xl {
+        --bs-modal-width: 1100px !important;
+    }
+}
+.scroll-table{
+    overflow: auto;
+    width: 1300px !important;
+}
+
+.scroll-table-long{
+    overflow: auto;
+    width: 1500px !important;
+}
+
+table thead tr th:first-child{
+    border-left: solid 1px #e5e5e5 !important;
+}
+
+table thead tr th:last-child{
+    border-right: solid 1px #e5e5e5 !important;
+    border-radius: 5px;
+}
+
+table thead tr th{
+    border-right: solid 1px #e5e5e5 !important;
+    border-radius: 5px;
+}
+.w80
+{
+    width:80px !important
+}
+.w220
+{
+    width: 220px !important;
+}
+
+.w270
+{
+    width: 270px !important;
+}
+.w150
+{
+    width: 150px !important;
+}
+.w180
+{
+    width: 180px !important;
+}
+.w400
+{
+    width: 400px !important;
+}
+.w120
+{
+    width: 120px !important;
+}
