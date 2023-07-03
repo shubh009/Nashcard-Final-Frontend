@@ -1,0 +1,26 @@
+.css-1iyq7zh-MuiDataGrid-columnHeaders
+{
+  border-top: solid 1px;
+  font-family: 'Nunito', sans-serif !important;
+}
+.css-1knaqv7-MuiButtonBase-root-MuiButton-root
+{
+   color: crimson !important;
+   font-size: 15px !important;
+   border-right: solid 1px crimson !important;
+   padding-right: 20px !important;
+   font-family: 'Nunito', sans-serif !important;
+}
+.css-t89xny-MuiDataGrid-columnHeaderTitle{
+    font-size: 15px;
+    font-family: 'Nunito', sans-serif !important;
+}
+.css-12u49z-MuiDataGrid-root .MuiDataGrid-cellContent{
+    font-size: 15px !important;
+    font-family: 'Nunito', sans-serif !important;
+}
+.css-yrdy0g-MuiDataGrid-columnHeaderRow
+{
+    background-color: #eee !important;
+    font-family: 'Nunito', sans-serif !important;
+}

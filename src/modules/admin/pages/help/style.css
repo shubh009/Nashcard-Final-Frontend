@@ -1,0 +1,7 @@
+.videoframe
+{
+    height: 400px;
+    width: 600px;
+    border: solid 5px #ddd;
+    border-radius: 5px;
+}

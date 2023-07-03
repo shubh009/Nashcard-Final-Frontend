@@ -15,7 +15,7 @@ import { CSVLink } from "react-csv";
 import FormData from "form-data";
 import Axios from "axios";
 import { DownloadTableExcel } from "react-export-table-to-excel";
-
+import axios from "axios";
 const index = () => {
   //local storage varaible
   const userid = localStorage.getItem("aUdetailsId");
@@ -23,6 +23,12 @@ const index = () => {
   const upid = localStorage.getItem("aUdetailsId");
   const odid = localStorage.getItem("aUorderid");
   const grname = localStorage.getItem("aGradingCompanyName");
+  const idperorder = localStorage.getItem("idperorder");
+  // const userid =7116
+  // const orderid="SG-33043"
+  // const upid=7116
+  // const odid="SG-33043"
+  // const grname="SGC"
   const slct = "SGC - Pokemon";
   //manage toast
   const notify = () =>
@@ -49,6 +55,7 @@ const index = () => {
   const [showtable, setShowtable] = useState(false);
   const [showorderdetails, setShoworderdetails] = useState(false);
   const [grcompanyname, setGrcompanyName] = useState("");
+  const [getGrade, setGrades] = useState([]);
 
   //states to manage log card add and update button
   const [updatebtn, setupdatebtn] = useState(false);
@@ -62,6 +69,7 @@ const index = () => {
   const [viewCustomerinfoShow, setViewCustomerinfoShow] = useState(false);
   const [psaCopypopup, setPsaCopypopup] = useState("");
   const [nonpsaCopypopup, setNonPsaCopypopup] = useState("");
+  const [orderDetPerid, setOrderDetPerid] = useState("");
 
   //state to manage the new node modal popup
   const handleClose = () => setShow(false);
@@ -69,7 +77,38 @@ const index = () => {
 
   //state to manage the edit order modal popup
   const handleEditClose = () => setEditshow(false);
-  const handleEditShow = () => setEditshow(true);
+  const handleEditShow = () => {
+    setEditshow(true);
+    bindServiceLevelDDL();
+    bindorderStatus();
+    const getOrderDetailsForEdit = async () => {
+      let result = await fetch(
+        `${process.env.REACT_APP_API_URL}/orders-details-perid`,
+        {
+          method: "post",
+          body: JSON.stringify({ orderid: odid, userid }),
+          headers: {
+            "content-type": "application/json",
+          },
+        }
+      );
+      let data = await result.json();
+      console.log(data);
+      if (!data.isEmpty) {
+        setOrderDetPerid(data[0]);
+        seteditcardsaverqty(data[0].totalcards);
+        seteditInsamount(data[0].insuranceammount);
+        seteditcardsaverprice(data[0].pricepercard);
+        seteditnoofkicksfromSL(data[0].NumberOfKicksfromservicelevel);
+        seteditpassesprice(data[0].PassesPrice);
+        seteditnoofreviewpasses(data[0].NumberofReviewPasses);
+        seteditnonloggedcardCount(data[0].NonLoggedCardCount);
+        seteditpercardprice(data[0].Percardpriceofnonloggedcard);
+        seteditnoofkicksfromSL(data[0].NumberOfKicksfromservicelevel);
+      }
+    };
+    getOrderDetailsForEdit();
+  };
 
   //state to manage the edit Grade modal popup
   const handleEditGradeClose = () => setEditGradeshow(false);
@@ -131,7 +170,7 @@ const index = () => {
   const [editSelectStatus, setEditSelectStatus] = useState("");
 
   //Manage State to get the gradeList in Popup
-  const [gradeList, setgradeList] = useState([]);
+  const [gradeList, setGradeList] = useState([]);
   const [OrderStatus, setOrderStatus] = useState("");
 
   //Manage State to get the userorderDetails in Popup
@@ -192,6 +231,26 @@ const index = () => {
     }
   };
 
+  const getdataGrades = async () => {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/get-grades`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userid }),
+    });
+    const data = await res.json();
+    if (res.status === 422 || !data) {
+      console.log("error ");
+    } else {
+      if (data.length > 0) {
+        setGrades(data);
+      } else {
+        setGrades([]);
+      }
+    }
+  };
+
   const orderDetails = async () => {
     let result = await fetch(
       `${process.env.REACT_APP_API_URL}/getOrderAndCardDetails/` + upid,
@@ -233,6 +292,7 @@ const index = () => {
     getnotesList();
     bindServiceLevelDDL();
     bindorderStatus();
+    getdataGrades();
   }, []);
 
   const deletecard = async (_id) => {
@@ -411,7 +471,7 @@ const index = () => {
       }
     }
   };
-
+  //
   const getcardlist = async () => {
     let result = await fetch(`${process.env.REACT_APP_API_URL}/getcardlist`, {
       method: "post",
@@ -421,11 +481,10 @@ const index = () => {
       },
     });
 
-    result = await result.json();
-    console.log(result);
-    if (!result.isEmpty) {
+    const result1 = await result.json();
+    if (!result1.isEmpty) {
       setIsEmpty(false);
-      setCardlistData(result.cards);
+      setCardlistData(result1.cards);
       setShoworderdetails(true);
     } else {
       setIsEmpty(true);
@@ -575,6 +634,7 @@ const index = () => {
   };
 
   const updateOrderdetails = async () => {
+    handleEditClose();
     let result = await fetch(
       `${process.env.REACT_APP_API_URL}/updateOrderFromAdmin/` + odid,
       {
@@ -747,6 +807,24 @@ const index = () => {
     // // 👇️ can still access file object here
     // console.log(fileObj);
     // console.log(fileObj.name);
+  };
+
+  const gradeDetails = async (orderid) => {
+    localStorage.setItem("gradeOrder", orderid);
+  };
+  const [frontImage, setFImage] = useState("");
+  const [backImage, setBImage] = useState("");
+  const getImg = async (cert) => {
+    const headers = {
+      Authorization:
+        "Bearer efIjuZZweQdXDXL149ELi1S-npq7N4kyxTko1XaJB8SCPzKKUzyBCq3nvGc2c0KynQ_fAFG0MxnyiNc_kMc_sBBytzvCNyppnx4T2mdF8EXD_pNPKSXmYEiYmOT0S2a7hiI3-jRlfsLAWIcI_AU2LKFKQe373Ez5p0rgCEkBBgFts_8MK_L4HsMzaL-OVwleJkveLOhH6RFveOBrR_gE6saJ2KxBE3ImqsSZovOBAOrgT1pZhQxYFHFkjdg5gVo4E5xAalUd_hQhZelrc-2A-2_5eQNF265cAT-KpWCig-rty_UJ",
+    };
+    const response = await axios.get(
+      `https://api.psacard.com/publicapi/cert/GetImagesByCertNumber/${cert}`,
+      { headers }
+    );
+    setFImage(response.data[1].ImageURL);
+    setBImage(response.data[0].ImageURL);
   };
 
   return (
@@ -951,25 +1029,53 @@ const index = () => {
                   <th className="w180">Back Image</th>
                   <th className="w180">Get Images</th>
                   <th className="w220">PSA Sub#</th>
-                  {/* <th className="w80">Edit </th> */}
+                  <th className="w80">Edit </th>
                   <th className="w80">Delete</th>
                 </tr>
-                {orderGrades.map((glist) => (
+                {getGrade.map((glist) => (
                   <tr className={glist._id}>
                     <td>{glist.orderid}</td>
                     <td>{glist.cert}</td>
                     <td>{glist.grade}</td>
-                    <td>{glist.description}</td>
-                    <td>{glist.PSAUpchargeAmmount}</td>
-                    <td>{glist.frontImage}</td>
-                    <td>{glist.backimage}</td>
+                    <td>{glist.desc}</td>
+                    <td>{glist.psaupcharge}</td>
+                    <td>
+                      {
+                        <img
+                          src={frontImage}
+                          alt="front"
+                          style={{ height: "7rem", width: "4.5rem" }}
+                        />
+                      }
+                    </td>
+                    <td>
+                      {
+                        <img
+                          src={backImage}
+                          alt="back"
+                          style={{ height: "7rem", width: "4.5rem" }}
+                        />
+                      }
+                    </td>
                     <td className="bg-success text-center text-text-decoration-none">
-                      <Link to="#" className="text-white">
+                      <Link
+                        to="#"
+                        onClick={(e) => getImg(glist.cert)}
+                        className="text-white"
+                      >
                         Get Images
                       </Link>
                     </td>
-                    <td>{gradeListPsa}</td>
-                    {/* <td className="bg-primary text-center text-decoration-none"><Link to="#" className="text-white">Edit</Link></td> */}
+                    <td>{glist.psasub}</td>
+                    <td className="bg-primary text-center text-decoration-none">
+                      <Link
+                        to="/admin/edit-grades/"
+                        onClick={gradeDetails(glist.orderid)}
+                        className="text-white"
+                      >
+                        Edit
+                      </Link>
+                    </td>
                     <td className="bg-danger text-center text-decoration-none">
                       <Link
                         to="#"
@@ -1114,6 +1220,7 @@ const index = () => {
                 <div className="form-group">
                   <label>Customer Name</label>
                   <input
+                    defaultValue={orderDetPerid.name}
                     type="text"
                     className="form-control disabled"
                     disabled
@@ -1124,6 +1231,7 @@ const index = () => {
                 <div className="form-group">
                   <label>Email</label>
                   <input
+                    defaultValue={orderDetPerid.email}
                     type="text"
                     className="form-control disabled"
                     disabled
@@ -1135,13 +1243,16 @@ const index = () => {
               <div className="col-lg-6">
                 <div className="form-group">
                   <label>Service Level</label>
-                  <select className="form-control" onChange={onServiceLevelDDL}>
+                  <select
+                    defaultValue={orderDetPerid.servicelevel}
+                    className="form-control"
+                    onChange={onServiceLevelDDL}
+                  >
                     <option name="select">Select Service Level</option>
                     {editservicelevel.map((svlist) => (
                       <option
                         value={svlist.servicelevelid}
                         key={svlist.servicelevelid}
-                        name="select"
                       >
                         {svlist.servicelevel}
                       </option>
@@ -1152,16 +1263,14 @@ const index = () => {
               <div className="col-lg-6">
                 <div className="form-group">
                   <label>Status</label>
-                  <select className="form-control" onChange={onStatus}>
+                  <select
+                    defaultValue={orderDetPerid.status}
+                    className="form-control"
+                    onChange={onStatus}
+                  >
                     <option name="select">Select Order Status</option>
                     {editStatus.map((Odstatus) => (
-                      <option
-                        value={Odstatus._id}
-                        key={Odstatus._id}
-                        name="select"
-                      >
-                        {Odstatus.status}
-                      </option>
+                      <option key={Odstatus._id}>{Odstatus.status}</option>
                     ))}
                   </select>
                 </div>
@@ -1170,7 +1279,7 @@ const index = () => {
             <div className="row">
               <div className="col-lg-6">
                 <div className="form-group">
-                  <label>Ammount Of Insurance</label>
+                  <label>Amount Of Insurance</label>
                   <input
                     type="text"
                     className="form-control"
@@ -1189,6 +1298,7 @@ const index = () => {
                           id="r1"
                           type="radio"
                           name="radio"
+                          checked={orderDetPerid.localpickup === 1}
                           value="1"
                           onChange={handleRbOnchange}
                         ></input>
@@ -1202,6 +1312,7 @@ const index = () => {
                           type="radio"
                           name="radio"
                           value="2"
+                          checked={orderDetPerid.localpickup === 2}
                           onChange={handleRbOnchange}
                         ></input>
                         <label htmlFor="r2">No, I'll mail them</label>
@@ -1219,6 +1330,7 @@ const index = () => {
                   <ul className="list-unstyled list-inline">
                     <li className="list-inline-item">
                       <input
+                        checked={orderDetPerid.PSAUpcharge === 1}
                         id="r1"
                         type="radio"
                         name="radio"
@@ -1228,10 +1340,11 @@ const index = () => {
                     </li>
                     <li className="list-inline-item">
                       <input
+                        checked={orderDetPerid.PSAUpcharge === 0}
                         id="r2"
                         type="radio"
                         name="radio"
-                        value="2"
+                        value="0"
                       ></input>
                       <label htmlFor="r2"> No</label>
                     </li>
@@ -1278,6 +1391,7 @@ const index = () => {
                 <div className="form-group">
                   <label>Total Price Card Saver</label>
                   <input
+                    defaultValue={orderDetPerid.orderTotal}
                     type="text"
                     className="form-control disabled"
                     disabled
@@ -1292,6 +1406,7 @@ const index = () => {
                   <input
                     type="text"
                     className="form-control"
+                    defaultValue={orderDetPerid.NonLoggedCardCount}
                     onChange={(e) => seteditnonloggedcardCount(e.target.value)}
                     value={editnonloggedcardCount}
                   ></input>
@@ -1301,6 +1416,7 @@ const index = () => {
                 <div className="form-group">
                   <label>Per Card Price of Non Logged Card</label>
                   <input
+                    defaultValue={orderDetPerid.Percardpriceofnonloggedcard}
                     type="text"
                     className="form-control"
                     onChange={(e) => seteditpercardprice(e.target.value)}
@@ -1325,6 +1441,7 @@ const index = () => {
                 <div className="form-group">
                   <label>Kicks from Review</label>
                   <input
+                    defaultValue={orderDetPerid.Kicksfromreview}
                     type="text"
                     className="form-control disabled"
                     disabled

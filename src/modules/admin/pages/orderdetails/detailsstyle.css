@@ -189,3 +189,21 @@ table thead tr th{
 {
     width: 120px !important;
 }
+.css-12u49z-MuiDataGrid-root
+{
+    font-family: 'Nunito', sans-serif !important;
+}
+.css-12u49z-MuiDataGrid-root .row
+{
+   padding-top: 10px;
+   padding-bottom: 10px ;
+}
+.MuiDataGrid-row.Mui-selected{
+    height: 100px !important;
+}
+
+.box{
+    float: left;
+    border: solid 1px #ccc;
+    padding: 10px 15px;
+}

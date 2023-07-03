@@ -11,14 +11,22 @@ import Button from "react-bootstrap/Button";
 import { BiPlusCircle } from "react-icons/bi";
 import FormData from "form-data";
 import Axios from "axios";
-import { saveAs } from "file-saver";
 import sampleCsv from "../../../../../src/GradeList.csv";
-
+import Card from "react-bootstrap/Card";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 const index = () => {
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
+  const [orderIdAutoCom, setOrderIdAutoCom] = useState([]);
+  const [orderIdMatch, setOrderMatch] = useState([]);
+  const [getUpdated, setUpdatedData] = useState([]);
+  const [getUploadedData, setUplodeddData] = useState([]);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [show1, setShow1] = useState(false);
 
+  const handleClose1 = () => setShow1(false);
+  const handleShow1 = () => setShow1(true);
   //state to manage the grade popuop textboxes
   const [cert, setCert] = useState("");
   const [grade, setGrade] = useState("");
@@ -60,7 +68,7 @@ const index = () => {
       });
     }
 
-    let result = await fetch(`${process.env.REACT_APP_API_URL}/allgradelist`, {
+    let result = await fetch(`${process.env.REACT_APP_API_URL}/order-status`, {
       method: "POST",
       body: fbody,
       headers: {
@@ -69,8 +77,8 @@ const index = () => {
     });
     result = await result.json();
     if (result) {
-      setOrderStatus(result.status);
-      setgradeList(result.Grades);
+      setOrderStatus(result);
+      // setgradeList(result);
     }
   };
 
@@ -93,6 +101,7 @@ const index = () => {
       if (result) {
         notifyupdate();
         getGradeList();
+        getdataUpdate();
       }
     } else {
       notifyalert("order Id Not Found");
@@ -137,22 +146,48 @@ const index = () => {
   const handleFileSubmit = (e) => {
     e.preventDefault();
     if (file !== null) {
-      console.log(file);
       let formValue = new FormData();
       formValue.append("file", file);
-      formValue.append("userid", 5549);
-      formValue.append("orderid", "SG-00132");
+      // formValue.append("userid",5549);
+      // formValue.append("orderid","SG-00132");
 
-      Axios.post(`${process.env.REACT_APP_API_URL}/upload`, formValue, {
+      Axios.post(`${process.env.REACT_APP_API_URL}/upload-grades`, formValue, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       }).then((res) => {
-        sucessMessage("File Uploaded Sucessfully");
+        // console.log(res);
+        setShow1(true);
+        handleShow1();
+        // setFile(null)
+        // sucessMessage("File Uploaded Sucessfully");
       });
     } else {
       alert("Select a valid file.");
     }
+  };
+  const handleMailSend = (e) => {
+    // e.preventDefault();
+    handleClose1();
+    const getMail = async () => {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/get-uploaded-grades-for-mail`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await res.json();
+      if (res.status === 422 || !data) {
+        console.log("error ");
+      } else {
+        sucessMessage("Mail Sent Sucessfully");
+        // setOrderIdAutoCom(data);
+      }
+    };
+    getMail();
   };
 
   // const handleDownload = () => {
@@ -162,7 +197,192 @@ const index = () => {
   //   FileSaver.saveAs(file);
 
   // }
+  useEffect(() => {
+    getdataUpdate();
+    getdata();
+  }, []);
 
+  const getdata = async () => {
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/order-autocomplete`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await res.json();
+    if (res.status === 422 || !data) {
+      console.log("error ");
+    } else {
+      setOrderIdAutoCom(data);
+    }
+  };
+
+  const getdataUpdate = async () => {
+    const res1 = await fetch(
+      `${process.env.REACT_APP_API_URL}/get-uploaded-grades`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data1 = await res1.json();
+    if (res1.status === 422 || !data1) {
+      console.log("error ");
+    } else {
+      setUpdatedData(data1);
+    }
+  };
+
+  const searchOrderId = (text) => {
+    if (!text) {
+      setOrderMatch([]);
+    } else {
+      let matches = orderIdAutoCom.filter((orderid) => {
+        const regex = new RegExp(`${text}`, "gi");
+        return orderid.orderid.match(regex);
+      });
+      setOrderMatch(matches);
+    }
+  };
+
+  const handleSuggestion = (suggestion) => {
+    setorderid(suggestion);
+    setOrderMatch([]);
+  };
+
+  const columns = [
+    {
+      field: "ordernumber",
+      headerClassName: " small",
+      cellClassName: "small font-weight-bold",
+      headerName: "Order Number",
+      width: 150,
+    },
+    {
+      field: "qty",
+      headerClassName: " small",
+      cellClassName: "small font-weight-bold",
+      headerName: "Qty",
+      width: 150,
+    },
+    {
+      field: "name",
+      headerClassName: " small",
+      cellClassName: "small font-weight-bold",
+      headerName: "Customer Name",
+      width: 150,
+    },
+    {
+      field: "servicelevel",
+      headerClassName: " small",
+      cellClassName: "small font-weight-bold",
+      headerName: "Service Level",
+      width: 150,
+    },
+    {
+      field: "psasub",
+      headerClassName: " small",
+      cellClassName: "small font-weight-bold",
+      headerName: "Sub #",
+      width: 200,
+    },
+    {
+      field: "sgcphoto",
+      headerClassName: " small",
+      cellClassName: "small font-weight-bold",
+      headerName: "Sgc Photo",
+      width: 250,
+    },
+
+    {
+      field: "order",
+      headerClassName: " small",
+      cellClassName: "small font-weight-bold",
+      headerName: "Order Details",
+      width: 150,
+      renderCell: (row) => (
+        <td>
+          <td>
+            <Link
+              to="/admin/order-details/"
+              className="text-danger"
+              onClick={() =>
+                orderDetails(
+                  row.row.userid,
+                  row.row.ordernumber,
+                  row.row.grcompanyname
+                )
+              }
+            >
+              {" "}
+              Order Details
+            </Link>
+          </td>
+        </td>
+      ),
+    },
+    {
+      field: "alert",
+      headerClassName: " small",
+      cellClassName: "small font-weight-bold",
+      headerName: "Alert V2",
+      width: 150,
+      renderCell: (row) => (
+        <td>
+          <td>
+            <Link
+              to="#"
+              className="text-danger"
+              onClick={() =>
+                orderDetails(
+                  row.row.userid,
+                  row.row.ordernumber,
+                  row.row.grcompanyname
+                )
+              }
+            >
+              Alert V2
+            </Link>
+          </td>
+        </td>
+      ),
+    },
+    {
+      field: "ordertotal",
+      headerClassName: " small",
+      cellClassName: "small font-weight-bold",
+      headerName: "Order Total",
+      width: 150,
+    },
+  ];
+  const rows = getUpdated.map((element, index) => ({
+    _id: element._id,
+    name: element.name,
+    sgcphoto: element.sgcphoto,
+    psasub: element.psasub,
+    servicelevel: element.servicelevel,
+    status: element.status,
+    qty: element.qty,
+    userid: element.userid,
+    ordernumber: element.orderid,
+    grcompanyname: element.grname,
+    ordertotal: element.ordertotal,
+  }));
+  const orderDetails = async (uid, orderid, grname) => {
+    localStorage.setItem("aUdetailsId", uid);
+    localStorage.setItem("aUorderid", orderid);
+    localStorage.setItem("aGradingCompanyName", grname);
+  };
+  const other = {
+    autoHeight: true,
+    showCellVerticalBorder: true,
+    showColumnVerticalBorder: true,
+  };
   return (
     <>
       <div className="container-fluid " id="admin">
@@ -192,7 +412,22 @@ const index = () => {
                     type="text"
                     value={orderid}
                     onChange={(e) => setorderid(e.target.value)}
+                    onKeyDown={(e) => searchOrderId(e.target.value)}
                   ></input>
+                  {orderIdMatch
+                    ? orderIdMatch.map((el, index) => {
+                        return (
+                          <Card title={el.orderid} key={index}>
+                            <Card.Body
+                              style={{ cursor: "pointer" }}
+                              onClick={() => handleSuggestion(el.orderid)}
+                            >
+                              {el.orderid}
+                            </Card.Body>
+                          </Card>
+                        );
+                      })
+                    : null}
                 </div>
               </div>
               <div className="col-lg-6">
@@ -277,7 +512,25 @@ const index = () => {
             </Button>
           </Modal.Footer>
         </Modal>
-
+        <Modal show={show1} onHide={handleClose1}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            WoW! All records from the CSV file has uploaded. <br></br>
+            Now Do you want to send mail to each user for grade popped? If yes
+            please click the "SEND NOW" button or click the "Close" button to
+            dismiss the popup
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose1}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={(e) => handleMailSend()}>
+              SEND NOW
+            </Button>
+          </Modal.Footer>
+        </Modal>
         <div className="row" id="grade">
           <div className="col-lg-2 noleftrightpadding">
             <UsidePanel></UsidePanel>
@@ -397,43 +650,45 @@ const index = () => {
               <div className="col-lg-12">
                 <div className="Dashboardsec box-shadow helpform">
                   <div className="Topl">
-                    <span className="heading-level-2">
-                      Customer Orders that Need Alertin' (Adjust prior to 11479)
-                    </span>
+                    <span className="heading-level-2">Customer Orders</span>
                   </div>
                   <div className="mt-2">
-                    <Table striped bordered hover>
-                      <thead>
-                        <tr>
-                          <th className="w80">Order#</th>
-                          <th className="w80">Qty</th>
-                          <th className="w270">Customer Name</th>
-                          <th className="w220">Service Level</th>
-                          <th className="w80">PSA Sub#</th>
-                          <th className="w150">Order Total</th>
-                          <th className="w220">Order Details </th>
-                          <th className="w150">Alert V2</th>
-                        </tr>
-                        <tr>
-                          <td>49372</td>
-                          <td>1</td>
-                          <td>Steve Roth</td>
-                          <td>SGC Regular</td>
-                          <td>205317056181</td>
-                          <td>35.0</td>
-                          <td>
-                            <Link to="#" className="btn btn-primary">
-                              Order Details
-                            </Link>
-                          </td>
-                          <td>
-                            <Link to="#" className="btn btn-danger">
-                              Alert V2
-                            </Link>
-                          </td>
-                        </tr>
-                      </thead>
-                    </Table>
+                    {/* <Table striped bordered hover>
+                           <thead>
+                               <tr>
+                                 <th className="w80">Order#</th>
+                                 <th className="w80">Qty</th>
+                                 <th className="w270">Customer Name</th>
+                                 <th className="w220">Service Level</th>
+                                 <th className="w80">PSA Sub#</th>     
+                                 <th className="w150">Order Total</th>      
+                                 <th className="w220">Order Details </th>      
+                                
+                                </tr>
+                              
+                                
+                           </thead>
+                        </Table> */}
+                    <DataGrid
+                      className="mt-3 mb-3"
+                      style={{ fontWeight: "400" }}
+                      components={{
+                        Toolbar: GridToolbar,
+                      }}
+                      density="compact"
+                      autoHeight
+                      getRowId={(element) => element._id}
+                      rows={rows}
+                      columns={columns}
+                      initialState={{
+                        pagination: {
+                          paginationModel: {
+                            pageSize: 15,
+                          },
+                        },
+                      }}
+                      {...other}
+                    />
                   </div>
                 </div>
               </div>
@@ -491,11 +746,11 @@ const index = () => {
                         {gradeList.map((glist) => (
                           <tr className={glist._id}>
                             <td>{glist.orderid}</td>
-                            <td></td>
+                            <td>{glist.PSASub}</td>
                             <td>{glist.cert}</td>
                             <td>{glist.grade}</td>
                             <td>{glist.description}</td>
-                            <td>{glist.OrderStatus}</td>
+                            <td>{glist.orderStatus}</td>
                             <td className="text-center">
                               <Link
                                 to="#"
