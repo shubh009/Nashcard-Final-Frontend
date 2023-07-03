@@ -27,12 +27,12 @@ import { useNavigate } from "react-router-dom";
 function App() {
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(localStorage.getItem("userid"));
-    if (localStorage.getItem("userid")) {
-      navigate("/user/dashbaord");
-    } else {
-      navigate("/login");
-    }
+    // console.log(localStorage.getItem("userid"));
+    // if (localStorage.getItem("userid")) {
+    //   navigate("/user/dashbaord");
+    // } else {
+    //   navigate("/login");
+    // }
   }, []);
 
   return (
