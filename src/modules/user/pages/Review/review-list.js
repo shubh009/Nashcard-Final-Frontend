@@ -75,6 +75,7 @@ const reviewList = () => {
                       <th>Review Id#</th>
                       <th>Company Name</th>
                       <th>Card Type</th>
+                      <th>Status</th>
                       <th>Comments</th>
                     </tr>
                     {reviewdata.map((review) => (
@@ -82,6 +83,7 @@ const reviewList = () => {
                         <td>{review.reviewid}</td>
                         <td>{review.companyname}</td>
                         <td>{review.cardtye}</td>
+                        <td>{review.status}</td>
                         <td>{review.comment}</td>
                       </tr>
                     ))}

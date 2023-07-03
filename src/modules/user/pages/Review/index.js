@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Uheader from "../../../../components/user/header/uheader";
 import UsidePanel from "../../../../components/user/sidepanel/usidepanel";
 import "./riview.css";
-import Userprofile from "../../../../assets/images/rectangle-user-icon.png";
+import { useNavigate } from "react-router-dom";
 
 const review = () => {
   const [companyname, setcompanyname] = useState("");
@@ -10,6 +10,8 @@ const review = () => {
   const [comments, setcomments] = useState("");
   const [agree, setagree] = useState("");
   const userid = localStorage.getItem("userid");
+
+  const navigate = useNavigate();
 
   const handleonchange = (p) => {
     const txtcomments = p.target.value;
@@ -21,7 +23,7 @@ const review = () => {
     if (index > 0) {
       const dname = e.target[index].text;
       setcardtype(dname);
-      alert(dname);
+      //alert(dname);
     } else {
       alert("Please select Card Type");
     }
@@ -59,6 +61,7 @@ const review = () => {
             cardtye: catdtype,
             comment: comments,
             isactive: true,
+            status: "Created",
           }),
           headers: {
             "content-type": "application/json",
@@ -68,6 +71,7 @@ const review = () => {
       alert(
         "Your Card has been submitted for Review. We will send you the mail very soon"
       );
+      navigate("/user/review-list");
     } else {
       alert("All Fields Are Mandatory");
     }

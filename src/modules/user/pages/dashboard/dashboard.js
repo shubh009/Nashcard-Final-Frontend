@@ -74,9 +74,10 @@ const dashboard = () => {
                   <div className="row">
                     <div className="col-lg-8 float-end"></div>
                     <div className="col-lg-4">
-                      <button type="button" className="submitbtn">
+                      <Link to="/user/new-grading-order" className="submitbtn">
+                        {" "}
                         Create New Order
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

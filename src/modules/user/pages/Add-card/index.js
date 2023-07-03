@@ -7,10 +7,13 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { FiUploadCloud } from "react-icons/fi";
 import Table from "react-bootstrap/Table";
 import { useNavigate, Link } from "react-router-dom";
+import Axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
 
 //imp note: have to clear order details local storage after completion of order.
 
 const index = () => {
+  const sucessMessage = (e) => toast.success(e);
   const navigate = useNavigate();
   const orderid = localStorage.getItem("Porderid");
   const userid = localStorage.getItem("userid");
@@ -51,6 +54,26 @@ const index = () => {
 
   //States to get set the users card list for that partculer order
   const [cardlistData, setCardlistData] = useState([]);
+
+  // const headers = [
+  //     { label: "Qty", key: "Qty" },
+  //     { label: "Card year", key: "Cardyear" },
+  //     { label: "Brand", key: "Brand" },
+  //     { label: "Card Number", key: "CNumber" },
+  //     { label: "Player Name", key: "PName" },
+  //     { label: "Attributes/SN", key: "AttrSN" },
+  //     { label: "Declared Value", key: "dv" },
+
+  //   ];
+  const [carduploadfilename, setcarduploadfileName] = useState(null);
+  const [file, setFile] = useState(null);
+
+  const inputRef = useRef(null);
+
+  const handleClick = () => {
+    // 👇️ open file input box on click of another element
+    inputRef.current.click();
+  };
 
   useEffect(() => {
     getorderdetails();
@@ -116,47 +139,92 @@ const index = () => {
   };
 
   const Addnewcard = async (e) => {
-    setShowtable(true);
-    setShoworderdetails(true);
-    totalinsuracecost();
-    let result = await fetch(`${process.env.REACT_APP_API_URL}/addcard`, {
-      method: "post",
-      body: JSON.stringify({
-        userid: userid,
-        orderid: orderid,
-        rowid: 4,
-        qty: qty,
-        cardyear: cardyear,
-        brand: brand,
-        cardnumber: cardnumber,
-        playername: playername,
-        attribute: attribute,
-        totalDV: ntotalDv,
-        insuranceAmt: insuranceamt,
-        trackingno: trackingno,
-      }),
-      headers: {
-        "content-type": "application/json",
-      },
-    });
-    result = await result.json();
+    if (carduploadfilename) {
+      e.preventDefault();
+      if (file !== null) {
+        console.log(file);
+        let formValue = new FormData();
+        formValue.append("file", file);
+        formValue.append("userid", userid);
+        formValue.append("orderid", orderid);
 
-    if (result) {
-      setIsEmpty(false);
-      setCardlistData(result.cards);
-      setShoworderdetails(true);
-      // setqty("");
-      // setattribute("");
-      // setbrand("");
-      // setcardnumber("");
-      // setCardyear("");
-      // setplayername("");
-      // setpricepercard("");
-      // settotaldv("");
-      //alert("Insurance & Card details has been updated");
+        Axios.post(`${process.env.REACT_APP_API_URL}/upload`, formValue, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }).then((res) => {
+          getcardlist();
+          //sucessMessage("File Uploaded Sucessfully");
+        });
+      } else {
+        alert("Select a valid file.");
+      }
     } else {
-      alert("find some issue");
+      setShowtable(true);
+      setShoworderdetails(true);
+      totalinsuracecost();
+      let result = await fetch(`${process.env.REACT_APP_API_URL}/addcard`, {
+        method: "post",
+        body: JSON.stringify({
+          userid: userid,
+          orderid: orderid,
+          rowid: 4,
+          qty: qty,
+          cardyear: cardyear,
+          brand: brand,
+          cardnumber: cardnumber,
+          playername: playername,
+          attribute: attribute,
+          totalDV: ntotalDv,
+          insuranceAmt: insuranceamt,
+          trackingno: trackingno,
+        }),
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+      result = await result.json();
+
+      if (result) {
+        setIsEmpty(false);
+        setCardlistData(result.cards);
+        setShoworderdetails(true);
+        // setqty("");
+        // setattribute("");
+        // setbrand("");
+        // setcardnumber("");
+        // setCardyear("");
+        // setplayername("");
+        // setpricepercard("");
+        // settotaldv("");
+        //alert("Insurance & Card details has been updated");
+      } else {
+        alert("find some issue");
+      }
     }
+  };
+
+  const handleFileChange = (event) => {
+    const fileObj = event.target.files && event.target.files[0];
+    setFile(event.target.files && event.target.files[0]);
+    if (!fileObj) {
+      return;
+    }
+
+    setcarduploadfileName(fileObj.name);
+
+    // setcarduploadfileName(fileObj.name);
+    // console.log('fileObj is', fileObj);
+
+    // // 👇️ reset file input
+    event.target.value = null;
+
+    // // 👇️ is now empty
+    // console.log(event.target.files);
+
+    // // 👇️ can still access file object here
+    // console.log(fileObj);
+    // console.log(fileObj.name);
   };
 
   const FinalOrder = async (e) => {
@@ -285,6 +353,17 @@ const index = () => {
 
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={7000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="container-fluid ">
         <div className="row">
           <div className="col-lg-2 noleftrightpadding">
@@ -406,9 +485,32 @@ const index = () => {
                 <div className="row">
                   <div className="theme-highlight-div mb-4 text-center">
                     <div className="form-group mt-4 mb-4">
-                      <Link className="text-theme mb-1 d-block text-decoration-none">
-                        <BiPlusCircle></BiPlusCircle> Upload A CSV
-                      </Link>
+                      <form className="text-center mb-2">
+                        <input
+                          style={{ display: "none" }}
+                          ref={inputRef}
+                          type="file"
+                          onChange={handleFileChange}
+                        />
+                        <Link
+                          className="text-theme mb-1 d-block text-decoration-none"
+                          onClick={handleClick}
+                        >
+                          <BiPlusCircle></BiPlusCircle> Select A CSV File To
+                          Upload
+                        </Link>
+                        <label className="mb-2">{carduploadfilename}</label>
+                        <center>
+                          {" "}
+                          <button
+                            className="submitbtn d-block w270 text-center"
+                            type="submit"
+                            onClick={Addnewcard}
+                          >
+                            Log Cards Via CSV
+                          </button>
+                        </center>
+                      </form>
                       <p className="mb-1">Or</p>
                       <p className="mb-1">
                         Add match card below indivudaly by filling in all
