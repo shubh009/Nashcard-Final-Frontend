@@ -60,11 +60,25 @@ return(
                              <div className="row">
                             <div className="col-lg-3">
                                     <span className="iconn">
+                                        <BiCartAdd></BiCartAdd>
+                                    </span> 
+                            </div>
+                            <div className="col-lg-9 noleftrightpadding">
+                                <Link to={"/admin/upcharges/"} >Upcharges</Link>
+                            </div>
+                       </div>
+                       </div>   
+                    </div>
+                     <div className="sidemenu-item">
+                        <div className="normal">
+                             <div className="row">
+                            <div className="col-lg-3">
+                                    <span className="iconn">
                                         <VscPreview></VscPreview>
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                                <Link to={""} >Reports</Link>
+                                <Link to={"#"} >Reports</Link>
                             </div>
                        </div>
                        </div>   
@@ -78,7 +92,7 @@ return(
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                                <Link to={""} >Tasks</Link>
+                                <Link to={"#"} >Tasks</Link>
                             </div>
                        </div>
                        </div>   
