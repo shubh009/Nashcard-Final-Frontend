@@ -119,7 +119,7 @@ const shipping = () => {
     showCellVerticalBorder: true,
     showColumnVerticalBorder: true,
   };
-
+  // tes
   useEffect(() => {
     const getdata = async () => {
       const res = await fetch(
