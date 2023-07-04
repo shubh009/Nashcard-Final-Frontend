@@ -58,24 +58,24 @@ const LogCard = () => {
       headerName: "Order Creation Date/Time",
       width: 250,
     },
-    {
-      field: "details",
-      headerClassName: " small",
-      cellClassName: "small font-weight-bold",
-      headerName: "Details",
-      width: 150,
-      renderCell: (row) => (
-        <td>
-          <Link
-            to="#"
-            onClick={() => orderDetails(row.row.userid)}
-            className=""
-          >
-            Details
-          </Link>
-        </td>
-      ),
-    },
+    // {
+    //   field: "details",
+    //   headerClassName: " small",
+    //   cellClassName: "small font-weight-bold",
+    //   headerName: "Details",
+    //   width: 150,
+    //   renderCell: (row) => (
+    //     <td>
+    //       <Link
+    //         to="#"
+    //         onClick={() => orderDetails(row.row.userid)}
+    //         className=""
+    //       >
+    //         Details
+    //       </Link>
+    //     </td>
+    //   ),
+    // },
   ];
   const orderDetails = async (userid) => {
     localStorage.setItem("userid", userid);

@@ -102,7 +102,7 @@ const dashboard = () => {
                           <th>Total Cards</th>
                           <th>View Grades</th>
                           <th>Payment Link</th>
-                          <th>Order Details</th>
+                          {/* <th>Order Details</th> */}
                         </tr>
 
                         {orderdata.map((order) => (
@@ -122,7 +122,7 @@ const dashboard = () => {
                                 Payment Link
                               </Link>
                             </td>
-                            <td>
+                            {/* <td>
                               {order.isordercomplete ? (
                                 <button
                                   type="submit"
@@ -141,7 +141,7 @@ const dashboard = () => {
                                   Resume Order
                                 </button>
                               )}
-                            </td>
+                            </td> */}
                           </tr>
                         ))}
 

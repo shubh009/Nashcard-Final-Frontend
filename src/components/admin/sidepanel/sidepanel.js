@@ -3,7 +3,7 @@ import './sidepanel.css';
 import NashcardLogo from '../../../assets/images/nashcard-logo.png';
 import { Link, useNavigate } from "react-router-dom";
 import { MdOutlineDashboardCustomize, MdOutlineLocalShipping, MdShareLocation, MdOutlinePhotoSizeSelectActual } from "react-icons/md";
-import { BiCartAdd, BiUser, BiLogOutCircle, BiMailSend, BiReceipt } from "react-icons/bi";
+import { BiCartAdd, BiUser, BiLogOutCircle, BiMailSend, BiReceipt, BiCategory } from "react-icons/bi";
 import { VscPreview, VscSettings } from "react-icons/vsc";
 import { TbHelp, TbUsers, TbNotes, TbTrack } from "react-icons/tb";
 import {AiOutlineApi} from "react-icons/ai"
@@ -60,7 +60,7 @@ return(
                              <div className="row">
                             <div className="col-lg-3">
                                     <span className="iconn">
-                                        <BiCartAdd></BiCartAdd>
+                                        <BiCategory></BiCategory>
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
@@ -74,16 +74,45 @@ return(
                              <div className="row">
                             <div className="col-lg-3">
                                     <span className="iconn">
-                                        <VscPreview></VscPreview>
+                                        <BiCategory></BiCategory>
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                                <Link to={"#"} >Reports</Link>
+                                <Link to={"/admin/psa-orders/"} >PSA Orders</Link>
                             </div>
                        </div>
                        </div>   
                     </div>
                      <div className="sidemenu-item">
+                        <div className="normal">
+                             <div className="row">
+                            <div className="col-lg-3">
+                                    <span className="iconn">
+                                        <BiCategory></BiCategory>
+                                    </span> 
+                            </div>
+                            <div className="col-lg-9 noleftrightpadding">
+                                <Link to={"/admin/service-level-tracking/"} >Order Tracking</Link>
+                            </div>
+                       </div>
+                       </div>   
+                    </div>
+                     <div className="sidemenu-item">
+                        <div className="normal">
+                             <div className="row">
+                            <div className="col-lg-3">
+                                    <span className="iconn">
+                                        <BiCategory></BiCategory>
+                                    </span> 
+                            </div>
+                            <div className="col-lg-9 noleftrightpadding">
+                                <Link to={"/admin/card-tracking/"} >Card Tracking</Link>
+                            </div>
+                       </div>
+                       </div>   
+                    </div>
+                    
+                     {/* <div className="sidemenu-item">
                         <div className="normal">
                              <div className="row">
                             <div className="col-lg-3">
@@ -96,7 +125,8 @@ return(
                             </div>
                        </div>
                        </div>   
-                    </div>
+                    </div> */}
+
                      <div className="sidemenu-item">
                         <div className="normal">
                              <div className="row">
@@ -106,7 +136,23 @@ return(
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                                <Link to={""} >Help</Link>
+                                <Link to={"/admin/cards/"} >Cards</Link>
+                                </div>
+                                
+                       </div>
+                       </div>   
+                    </div>
+
+                     <div className="sidemenu-item">
+                        <div className="normal">
+                             <div className="row">
+                            <div className="col-lg-3">
+                                    <span className="iconn">
+                                        <TbHelp></TbHelp>
+                                    </span> 
+                            </div>
+                            <div className="col-lg-9 noleftrightpadding">
+                                <Link to={"/admin/help/"} >Help</Link>
                                 </div>
                                 
                        </div>
@@ -121,7 +167,7 @@ return(
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                            <Link to={"#"} >Customers</Link>
+                            <Link to={"/admin/customers"} >Customers</Link>
                                
                             </div>
                        </div>
@@ -136,7 +182,7 @@ return(
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                            <Link to={"#"} >Shipping</Link>
+                            <Link to={"/admin/shipping"} >Shipping</Link>
                                
                             </div>
                        </div>
@@ -151,7 +197,7 @@ return(
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                            <Link to={"#"} >Local Picks</Link>
+                            <Link to={"/admin/local-picks"} >Local Picks</Link>
                                
                             </div>
                        </div>
@@ -166,7 +212,7 @@ return(
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                            <Link to={"#"} >Order Notes</Link>
+                            <Link to={"/admin/order-notes"} >Order Notes</Link>
                                
                             </div>
                        </div>
@@ -181,7 +227,7 @@ return(
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                            <Link to={"#"} >Projects</Link>
+                            <Link to={"/admin/projects"} >Projects</Link>
                                
                             </div>
                        </div>
@@ -196,7 +242,7 @@ return(
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                            <Link to={"#"} >Logcards</Link>
+                            <Link to={"/admin/log-cards"} >Logcards</Link>
                                
                             </div>
                        </div>
@@ -211,7 +257,7 @@ return(
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                            <Link to={"#"} >SGC Photos</Link>
+                            <Link to={"/admin/sgc-photos"} >SGC Photos</Link>
                                
                             </div>
                        </div>
@@ -226,7 +272,7 @@ return(
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                            <Link to={"#"} >Review Send</Link>
+                            <Link to={"/admin/review-send"} >Review Send</Link>
                                
                             </div>
                        </div>
@@ -241,7 +287,7 @@ return(
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                            <Link to={"#"} >Sub Tracker</Link>
+                            <Link to={"/admin/psa-subtracker"} >Sub Tracker</Link>
                                
                             </div>
                        </div>
@@ -256,13 +302,13 @@ return(
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                            <Link to={"#"} >Recent Payment</Link>
+                            <Link to={"/admin/paid-orders"} >Recent Payment</Link>
                                
                             </div>
                        </div>
                        </div>   
                     </div>
-                    <div className="sidemenu-item">
+                    {/* <div className="sidemenu-item">
                         <div className="normal">
                              <div className="row">
                             <div className="col-lg-3">
@@ -276,8 +322,8 @@ return(
                             </div>
                        </div>
                        </div>   
-                    </div>
-                    <div className="sidemenu-item">
+                    </div> */}
+                    {/* <div className="sidemenu-item">
                         <div className="normal">
                              <div className="row">
                             <div className="col-lg-3">
@@ -291,7 +337,7 @@ return(
                             </div>
                        </div>
                        </div>   
-                    </div>
+                    </div> */}
                     <div className="sidemenu-item">
                         <div className="normal">
                              <div className="row">
@@ -301,7 +347,7 @@ return(
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                            <Link to={"#"} >Review</Link>
+                            <Link to={"/admin/memphis-review"} >Review</Link>
                                
                             </div>
                        </div>
