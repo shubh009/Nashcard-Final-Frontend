@@ -36,7 +36,7 @@ return(
                                     </span> 
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
-                                <Link to={"/admin/dashbaord"} >Dashboard</Link>
+                                <Link to={"/admin/dashboard"} >Dashboard</Link>
                             </div>
                        </div>
                        </div>   

@@ -190,12 +190,12 @@ const UpdateDetails = () => {
       if (password !== "" && rePassword !== "") {
         // console.log(name, email, contact, password);
         const getdata = async () => {
-          const res = await fetch(`${process.env.REACT_APP_API_URL}`, {
+          const res = await fetch(`${process.env.REACT_APP_API_URL}/profilechangepassword`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({}),
+            body: JSON.stringify( { email :  email}),
           });
           const data = await res.json();
           if (res.status === 422 || !data) {
