@@ -36,18 +36,19 @@ const profile = () => {
     getprofiledata();
   };
 
+  const [ dvalue, setdvalue ] = useState( "" );
   //toastr notification
   const notify = () => toast.success("Profile Information has been updated");
   const Changepassnotify = () =>
     toast.success("WOW! Password has been changed");
   const notifyalert = () => toast.error("Please fill all the details");
 
-  let dvalue = "";
+  
 
   const onServiceLevelDDL = (e) => {
     var index = e.target.selectedIndex;
-    dvalue = e.target.value;
-    alert(dvalue);
+    setdvalue(e.target.value) ;
+    //alert(dvalue);
   };
 
   const handleRePassword = (e) => {
@@ -117,10 +118,6 @@ const profile = () => {
   //code to update home and office address
   const updateaddress = async () => {
     if (
-      homeAddress != "" &&
-      homecity != "" &&
-      homeSttae != "" &&
-      homepincode != "" &&
       dvalue == 1
     ) {
       alert(homeSttae);

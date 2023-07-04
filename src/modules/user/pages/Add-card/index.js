@@ -154,7 +154,7 @@ const index = () => {
           },
         }).then((res) => {
           getcardlist();
-          //sucessMessage("File Uploaded Sucessfully");
+          sucessMessage("File Uploaded Sucessfully");
         });
       } else {
         alert("Select a valid file.");
@@ -197,7 +197,7 @@ const index = () => {
         // setplayername("");
         // setpricepercard("");
         // settotaldv("");
-        //alert("Insurance & Card details has been updated");
+        alert("Card details has been updated");
       } else {
         alert("find some issue");
       }
@@ -245,6 +245,7 @@ const index = () => {
         }
       );
       result = await result.json();
+      console.log( result );
       navigate("/user/dashbaord");
       //console.log(result);
     } else {
