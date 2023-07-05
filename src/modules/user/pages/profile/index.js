@@ -120,7 +120,7 @@ const profile = () => {
     if (
       dvalue == 1
     ) {
-      alert(homeSttae);
+      //alert(homeSttae);
       let profileResult = await fetch(
         `${process.env.REACT_APP_API_URL}/updateaddress`,
         {
@@ -276,7 +276,7 @@ const profile = () => {
         <div className="col-lg-2 noleftrightpadding">
           <UsidePanel></UsidePanel>
         </div>
-        <div className="col-lg-10 profileI noleftrightpadding">
+        <div className="col-lg-10 profile noleftrightpadding">
           <Uheader></Uheader>
           <div className="Dashboardsec box-shadow">
             <div className="row orer-details">

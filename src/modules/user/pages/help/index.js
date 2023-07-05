@@ -24,7 +24,7 @@ const index = () => {
     if (index > 0) {
       const dname = e.target[index].text;
       setquerytopic(dname);
-      alert(dname);
+      //alert(dname);
     } else {
       alert("Please select Card Type");
     }

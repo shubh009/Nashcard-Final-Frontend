@@ -53,7 +53,7 @@ const queryList = () => {
                 </div>
                 <div className="col-lg-6 float-end">
                   <div className=" mt-2 float-end">
-                    <Link to="/user/submit-review" className="submitbtn">
+                    <Link to="/user/help" className="submitbtn">
                       Post New Query
                     </Link>
                   </div>
