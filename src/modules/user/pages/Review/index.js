@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const review = () => {
   const [companyname, setcompanyname] = useState("");
-  const [catdtype, setcardtype] = useState("");
+  const [cardtype, setcardtype] = useState("");
   const [comments, setcomments] = useState("");
   const [agree, setagree] = useState("");
   const userid = localStorage.getItem("userid");
@@ -36,6 +36,7 @@ const review = () => {
   };
 
   const submitreview = async () => {
+   
     let newreviewid = "";
     const characters = "0123456789";
     const charactersLength = 5;
@@ -46,10 +47,11 @@ const review = () => {
       );
       counter += 1;
     }
+     
     let reviewPrefix = companyname;
     reviewPrefix = reviewPrefix.slice(0, 3);
     newreviewid = reviewPrefix + "-" + newreviewid;
-    if (companyname && comments && catdtype != null) {
+    if (companyname && comments && cardtype != null) {
       let result = await fetch(
         `${process.env.REACT_APP_API_URL}/submitreview`,
         {
@@ -58,7 +60,7 @@ const review = () => {
             userid: userid,
             reviewid: newreviewid,
             companyname: companyname,
-            cardtye: catdtype,
+            cardtype: cardtype,
             comment: comments,
             isactive: true,
             status: "Created",

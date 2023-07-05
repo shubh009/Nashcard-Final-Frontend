@@ -91,7 +91,6 @@ const Newsignup = () => {
         const max = 10000;
         let userid = min + Math.random() * (max - min);
         userid = Math.round(userid);
-        alert(userid);
         let result = await fetch(`${process.env.REACT_APP_API_URL}/register`, {
           method: "post",
           body: JSON.stringify({

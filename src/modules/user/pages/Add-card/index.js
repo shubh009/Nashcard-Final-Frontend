@@ -330,7 +330,7 @@ const index = () => {
 
   const updatecarddetails = async (updatecardid) => {
     const id = updatecardid;
-    alert(id);
+    //alert(id);
     let result = await fetch(
       `${process.env.REACT_APP_API_URL}/updatecard/` + id,
       {

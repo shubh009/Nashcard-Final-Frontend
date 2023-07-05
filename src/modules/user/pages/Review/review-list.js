@@ -28,7 +28,8 @@ const reviewList = () => {
       }
     );
     result = await result.json();
-    result = Array.of(result);
+    result = Array.of( result );
+    console.log( result );
     if (result) {
       //console.log(result);
       setDataerror(false);
@@ -82,7 +83,7 @@ const reviewList = () => {
                       <tr key={review._id}>
                         <td>{review.reviewid}</td>
                         <td>{review.companyname}</td>
-                        <td>{review.cardtye}</td>
+                        <td>{review.cardtype}</td>
                         <td>{review.status}</td>
                         <td>{review.comment}</td>
                       </tr>
