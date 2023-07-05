@@ -43,7 +43,7 @@ const index = () => {
   const [ntotalDv, nsettotaldv] = useState(1200);
   const [insuranceamt, setinsuranceamt] = useState("");
   const [trackingno, settrackingno] = useState("");
-  const [totalInsAmt, settotalInsAmt] = useState("");
+  const [totalInsAmt, settotalInsAmt] = useState(0);
 
   const [showtable, setShowtable] = useState(false);
   const [showorderdetails, setShoworderdetails] = useState(false);
@@ -93,7 +93,7 @@ const index = () => {
     );
 
     result = await result.json();
-
+    
     setname(result.name);
     settotalpriceofcards(result.orders[0].totalprice);
     setServiceLevel(result.orders[0].servicelevel);
@@ -104,7 +104,7 @@ const index = () => {
   const getcardlist = async () => {
     let result = await fetch(`${process.env.REACT_APP_API_URL}/getcardlist`, {
       method: "post",
-      body: JSON.stringify({ userid: userid }),
+      body: JSON.stringify({ userid: userid, orderid: orderid}),
       headers: {
         "content-type": "application/json",
       },
@@ -131,9 +131,12 @@ const index = () => {
     let calculatedInsamount = 0;
     if (insammount <= 500) {
       calculatedInsamount = 6;
+      settotalInsAmt(calculatedInsamount);
+      console.log( calculatedInsamount );
     } else {
       const calck = insammount / 500;
       calculatedInsamount = calck * 6;
+      console.log( calculatedInsamount );
       settotalInsAmt(calculatedInsamount);
     }
   };
@@ -186,6 +189,7 @@ const index = () => {
       result = await result.json();
 
       if (result) {
+        getcardlist()
         setIsEmpty(false);
         setCardlistData(result.cards);
         setShoworderdetails(true);
@@ -287,7 +291,9 @@ const index = () => {
     );
 
     result = await result.json();
-    if (result) {
+    if ( result )
+    {
+      totalinsuracecost();
       alert("Mobile no and insurance has been updated");
     }
   };
@@ -889,6 +895,7 @@ const index = () => {
                           type="text"
                           className="form-control"
                           disabled
+                          value={0}
                         ></input>
                       </div>
                     </div>
@@ -901,6 +908,7 @@ const index = () => {
                           type="text"
                           className="form-control"
                           disabled
+                          value={0}
                         ></input>
                       </div>
                     </div>
@@ -911,6 +919,8 @@ const index = () => {
                           type="text"
                           className="form-control"
                           disabled
+                          
+                          value={(totalcardcount * pricepercard)+ totalInsAmt}
                         ></input>
                       </div>
                     </div>

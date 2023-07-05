@@ -156,11 +156,9 @@ const index = () => {
           "Content-Type": "multipart/form-data",
         },
       }).then((res) => {
-        // console.log(res);
+        getdataUpdate();
         setShow1(true);
         handleShow1();
-        // setFile(null)
-        // sucessMessage("File Uploaded Sucessfully");
       });
     } else {
       alert("Select a valid file.");
@@ -372,7 +370,8 @@ const index = () => {
     ordernumber: element.orderid,
     grcompanyname: element.grname,
     ordertotal: element.ordertotal,
-  }));
+  } ) );
+  
   const orderDetails = async (uid, orderid, grname) => {
     localStorage.setItem("aUdetailsId", uid);
     localStorage.setItem("aUorderid", orderid);
