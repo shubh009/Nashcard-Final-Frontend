@@ -12,7 +12,9 @@ const reviewList = () => {
 
   useEffect(() => {
     getReviewList();
-  }, []);
+  }, [] );
+  
+  
 
   const getReviewList = async () => {
     let result = await fetch(
@@ -74,7 +76,7 @@ const reviewList = () => {
                   <thead>
                     <tr>
                       <th>Review Id#</th>
-                      <th>Company Name</th>
+                      <th>Card Qty</th>
                       <th>Card Type</th>
                       <th>Status</th>
                       <th>Comments</th>
@@ -82,7 +84,7 @@ const reviewList = () => {
                     {reviewdata.map((review) => (
                       <tr key={review._id}>
                         <td>{review.reviewid}</td>
-                        <td>{review.companyname}</td>
+                        <td>{review.notloggedcadqty}</td>
                         <td>{review.cardtype}</td>
                         <td>{review.status}</td>
                         <td>{review.comment}</td>
