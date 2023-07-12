@@ -12,7 +12,13 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 const index = () => {
   const [searchDatas, setSearchData] = useState([]);
-  const [datas, setData] = useState("");
+  const [ datas, setData ] = useState( "" );
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow( true );
+  const [cardlistData, setCardlistData] = useState([]);
+
+
   const columns = [
     {
       field: "reviewid",
@@ -60,7 +66,7 @@ const index = () => {
         <td>
           <Link
             to="#"
-            onClick={() => orderDetails(row.row.userid)}
+            onClick={() => handleShow(showCardOrderDetail(row.row.reviewid, row.row.userid))}
             className=""
           >
             Details
@@ -98,6 +104,30 @@ const index = () => {
       width: 140,
     },
   ];
+
+  const showCardOrderDetail = async ( reviewid, userid ) =>
+  {
+    // setreviewOrderid( reviewid );
+    // setuserid( userid )
+    
+    let result = await fetch(`${process.env.REACT_APP_API_URL}/getReviewcardlist`, {
+      method: "post",
+      body: JSON.stringify({ userid: userid, reviewid: reviewid}),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+
+    result = await result.json();
+    console.log(result);
+    if (!result.isEmpty) {
+      console.log( result.CardList );
+      setCardlistData( result.CardList );
+      
+    } 
+
+    
+  }
 
   const reviewDelete = async (id) => {
     const getdataDelete = async () => {
@@ -185,6 +215,7 @@ const index = () => {
       },
     });
     const data = await res.json();
+    console.log( data );
     if (res.status === 422 || !data) {
       console.log("error ");
     } else {
@@ -195,6 +226,20 @@ const index = () => {
   };
   return (
     <>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <div className="container-fluid " id="admin">
         <div className="row" id="grade">
           <div className="col-lg-2 noleftrightpadding">
