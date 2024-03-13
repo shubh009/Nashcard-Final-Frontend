@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import Table from "react-bootstrap/esm/Table";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Uheader from "../../../../components/user/header/uheader";
 import UsidePanel from "../../../../components/admin/sidepanel/sidepanel";
 import { BiMessageEdit, BiCheckDouble, BiPlusCircle } from "react-icons/bi";
@@ -18,6 +18,7 @@ import { DownloadTableExcel } from "react-export-table-to-excel";
 import axios from "axios";
 const index = () => {
   //local storage varaible
+  
   const userid = localStorage.getItem("aUdetailsId");
   const orderid = localStorage.getItem("aUorderid");
   const upid = localStorage.getItem("aUdetailsId");
@@ -35,7 +36,10 @@ const index = () => {
     toast.success("WOW! PSA SUB & order status has been updated");
   const notifyalert = () => toast.error("Please fill all the details");
   const Statusnotify = (e) => toast.success(e);
-  const sucessMessage = (e) => toast.success(e);
+  const sucessMessage = ( e ) => toast.success( e );
+  
+  //set Navigattion
+  const navigate = useNavigate();
 
   //state to mange the cards
   const [qty, setqty] = useState("");
@@ -826,6 +830,12 @@ const index = () => {
     setFImage(response.data[1].ImageURL);
     setBImage(response.data[0].ImageURL);
   };
+
+  const GotoSendInvoice = async() =>{
+    //navigate("admin/shipping");
+
+    
+  }
 
   return (
     <>
@@ -1900,7 +1910,7 @@ const index = () => {
                         </li>
                         <li className="list-inline-item mt-3">
                           <div className="admintopmenu">
-                            <Link to="#">Text Receipt</Link>
+                            <Link to="/payment/invoice" >Send Invoice</Link>
                           </div>
                         </li>
                       </ul>

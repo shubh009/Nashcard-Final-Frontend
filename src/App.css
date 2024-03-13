@@ -109,3 +109,11 @@ select {
   appearance: none !important;
   padding-right: 2rem !important;
 }
+.css-1lymaxv-MuiDataGrid-root
+{
+      font-family: 'Nunito', sans-serif !important;
+}
+.small
+{
+  font-size: 16px !important;
+}
