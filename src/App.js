@@ -45,6 +45,8 @@ import Shipping from "./modules/admin/pages/shipping/shipping";
 import PsasubmissionDetails from "./modules/admin/pages/shipping/psa-submission-details";
 import AddUsers from "./modules/admin/pages/manage-users/addUsers";
 import Invoice from "./modules/admin/pages/invoice";
+import UpdateDeliveryAddress from "./modules/user/pages/updateDeliveryAddress"
+
 function App() {
   return (
     <BrowserRouter>
@@ -62,6 +64,7 @@ function App() {
         <Route path="user/review-list/" element={<UReviewList />} />
         <Route path="user/help" element={<UHelp />} />
         <Route path="user/query-list" element={<UHelpList />} />
+        <Route path="user/add-new-delivery-address/:_id" element={<UpdateDeliveryAddress />} />
         <Route
           path="user/view-Order/shipping-details"
           element={<UShippingDetails />}
