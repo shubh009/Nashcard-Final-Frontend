@@ -45,6 +45,7 @@ import Shipping from "./modules/admin/pages/shipping/shipping";
 import PsasubmissionDetails from "./modules/admin/pages/shipping/psa-submission-details";
 import AddUsers from "./modules/admin/pages/manage-users/addUsers";
 import Invoice from "./modules/admin/pages/invoice";
+import InvoicesDashboard from "./modules/admin/pages/invoicesDashboard";
 import UpdateDeliveryAddress from "./modules/user/pages/updateDeliveryAddress"
 
 function App() {
@@ -72,6 +73,7 @@ function App() {
         <Route path="admin/dashboard/" element={<Adashboard />} />
         <Route path="admin/order-details/" element={<Orderdetails />} />
         <Route path="admin/grades/" element={<Grades />} />
+        <Route path="admin/invoices/" element={<InvoicesDashboard />} />
         <Route path="admin/upcharges/" element={<Upcharges />} />
         <Route
           path="admin/service-level-tracking/"

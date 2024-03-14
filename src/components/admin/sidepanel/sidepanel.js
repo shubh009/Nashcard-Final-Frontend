@@ -9,6 +9,7 @@ import { TbHelp, TbUsers, TbNotes, TbTrack } from "react-icons/tb";
 import {AiOutlineApi} from "react-icons/ai"
 import {TiBusinessCard} from "react-icons/ti";
 import {CgListTree} from "react-icons/cg"
+import { TbFileInvoice } from "react-icons/tb";
 
 const adminsidepanel=()=>{
     const navigate = useNavigate();
@@ -41,7 +42,7 @@ return(
                        </div>
                        </div>   
                     </div>
-                     <div className="sidemenu-item">
+                    <div className="sidemenu-item">
                         <div className="normal">
                              <div className="row">
                             <div className="col-lg-3">
@@ -51,6 +52,20 @@ return(
                             </div>
                             <div className="col-lg-9 noleftrightpadding">
                                 <Link to={"/admin/grades/"} >Grades</Link>
+                            </div>
+                       </div>
+                       </div>   
+                    </div>
+                    <div className="sidemenu-item">
+                        <div className="normal">
+                             <div className="row">
+                            <div className="col-lg-3">
+                                    <span className="iconn">
+                                        <TbFileInvoice ></TbFileInvoice>
+                                    </span> 
+                            </div>
+                            <div className="col-lg-9 noleftrightpadding">
+                                <Link to={"/admin/invoices/"} >Invoices</Link>
                             </div>
                        </div>
                        </div>   
