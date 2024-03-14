@@ -1,0 +1,11 @@
+#filterBar_first :nth-child(1) .btn {
+    background-color: #6d9ed0;
+  }
+  
+  #filterBar_second > :nth-child(2) {
+    background-color: #27c162 !important;
+  }
+  
+  #filterBar_second > :last-child {
+    background-color: #2e7dc2;
+  }
