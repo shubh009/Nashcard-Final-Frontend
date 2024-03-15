@@ -16,9 +16,10 @@ import FormData from "form-data";
 import Axios from "axios";
 import { DownloadTableExcel } from "react-export-table-to-excel";
 import axios from "axios";
+import SendDeliveryAddressUpdateLink from "./SendDeliveryAddressUpdateLink";
 const index = () => {
   //local storage varaible
-  
+
   const userid = localStorage.getItem("aUdetailsId");
   const orderid = localStorage.getItem("aUorderid");
   const upid = localStorage.getItem("aUdetailsId");
@@ -36,8 +37,8 @@ const index = () => {
     toast.success("WOW! PSA SUB & order status has been updated");
   const notifyalert = () => toast.error("Please fill all the details");
   const Statusnotify = (e) => toast.success(e);
-  const sucessMessage = ( e ) => toast.success( e );
-  
+  const sucessMessage = (e) => toast.success(e);
+
   //set Navigattion
   const navigate = useNavigate();
 
@@ -831,10 +832,10 @@ const index = () => {
     setBImage(response.data[0].ImageURL);
   };
 
-  const GotoSendInvoice = async() =>{
+  const GotoSendInvoice = async () => {
     //navigate("admin/shipping");
 
-    
+
   }
 
   return (
@@ -1913,6 +1914,10 @@ const index = () => {
                             <Link to="/payment/invoice" >Send Invoice</Link>
                           </div>
                         </li>
+
+                        {/* Send Delivery Address Update Link button */}
+                        <SendDeliveryAddressUpdateLink />
+
                       </ul>
                     </div>
                   </div>
