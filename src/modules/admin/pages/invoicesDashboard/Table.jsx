@@ -18,7 +18,7 @@ import Chip from '@mui/material/Chip';
 
 import axios from 'axios';
 
-const CustomTable = ({ data }) => {
+const CustomTable = ({ data, pageNumber, setPageNumber  }) => {
   const [disabledButtons, setDisabledButtons] = useState({});
   const [loading, setLoading] = useState({});
   const [showToast, setShowToast] = useState(false);
@@ -79,6 +79,11 @@ const CustomTable = ({ data }) => {
       setDisabledButtons({ ...disabledButtons, [id]: false });
       setLoading({ ...loading, [id]: false });
     }
+  };
+
+
+  const handlePageChange = (newPageNumber) => {
+    setPageNumber(newPageNumber);
   };
 
   return (
@@ -166,7 +171,29 @@ const CustomTable = ({ data }) => {
               ))}
           </TableBody>
         </Table>
+        
       </TableContainer>
+
+  {/* Pagination */}
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '20px' }}>
+        <Button
+          variant="outlined"
+          disabled={pageNumber === 1}
+          onClick={() => handlePageChange(pageNumber - 1)}
+        >
+          Previous
+        </Button>
+        <span style={{ margin: '0 10px' }}>Page {pageNumber}</span>
+        <Button
+          variant="outlined"
+          disabled={data && data.length < 10}
+          onClick={() => handlePageChange(pageNumber + 1)}
+        >
+          Next
+        </Button>
+      </div>
+
+
     </div>
   );
 };

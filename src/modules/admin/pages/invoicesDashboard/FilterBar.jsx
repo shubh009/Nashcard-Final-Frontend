@@ -1,34 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import DownloadIcon from '@mui/icons-material/Download';
 import axios from 'axios';
 import './filterbar.css';
 
-const FilterBar = ({ data, setData }) => {
+const FilterBar = ({ data, setData, pageNumber  }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState('');
   const [name, setName] = useState('');
 
   useEffect(() => {
     applyFilters();
-  }, [selectedStatus, name]);
+  }, [selectedStatus, name, pageNumber]);
 
   const applyFilters = async () => {
-    let url = `${process.env.REACT_APP_API_URL}/getInvoiceList`;
+    let url = `${process.env.REACT_APP_API_URL}/getInvoiceList?pageNumber=${pageNumber}`;
     if (selectedStatus) {
-      url += `?status=${selectedStatus}`;
+      url += `&status=${selectedStatus}`;
     }
 
     if (name) {
-      if (selectedStatus) {
         url += `&clientName=${name}`;
-      } else {
-        url += `?clientName=${name}`;
-      }
     }
 
     const res = await axios.get(url);
@@ -46,13 +39,6 @@ const FilterBar = ({ data, setData }) => {
     setName(newName);
   };
 
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
 
   return (
     <div
@@ -84,10 +70,6 @@ const FilterBar = ({ data, setData }) => {
           variant="outlined"
           style={{ width: '250px' }}
         />
-        {/* <Button variant="contained" startIcon={<DownloadIcon />}>
-          Import
-        </Button>
-        <Button variant="contained">New Invoice</Button> */}
       </div>
     </div>
   );
