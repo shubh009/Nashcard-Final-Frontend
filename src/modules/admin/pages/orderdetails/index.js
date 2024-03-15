@@ -17,6 +17,7 @@ import Axios from "axios";
 import { DownloadTableExcel } from "react-export-table-to-excel";
 import axios from "axios";
 import SendDeliveryAddressUpdateLink from "./SendDeliveryAddressUpdateLink";
+import UpdateDeliveryTimeline from "./UpdateDeliveryTimeline";
 const index = () => {
   //local storage varaible
 
@@ -1917,6 +1918,9 @@ const index = () => {
 
                         {/* Send Delivery Address Update Link button */}
                         <SendDeliveryAddressUpdateLink />
+
+                        {/* update order timeline */}
+                        <UpdateDeliveryTimeline />
 
                       </ul>
                     </div>
