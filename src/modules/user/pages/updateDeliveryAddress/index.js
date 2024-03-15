@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const InputField = ({ label, value, onChange, error }) => {
   return (
@@ -20,15 +23,15 @@ const InputField = ({ label, value, onChange, error }) => {
 export default function updateDeliveryAddress() {
   const param = useParams();
   const _id = param._id
-
-  console.log(param)
-  //   const [_id, setId] = useState(match.params._id);
   const [loading, setLoading] = useState('');
   const [state, setState] = useState('');
   const [country, setCountry] = useState('');
   const [city, setCity] = useState('');
   const [pincode, setPincode] = useState('');
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate()
+
+
 
   const handleInputChange = (e, setter) => {
     setter(e.target.value);
@@ -53,7 +56,7 @@ export default function updateDeliveryAddress() {
 
     if (Object.keys(errors).length === 0) {
       try {
-        await axios.put('http://localhost:8000/update_delivery_address', {
+        await axios.patch(`${process.env.REACT_APP_API_URL}/add/new/delivery/address/with/emailed/link`, {
           _id,
           state,
           country,
@@ -65,12 +68,17 @@ export default function updateDeliveryAddress() {
         setPincode("")
         setCity("")
         setCountry("")
-        alert("Address Updated")
+        toast.success("Address Updated");
+
+        setTimeout(() => {
+          navigate("/user/dashbaord")
+        }, 1000);
+
         // Handle success
       } catch (error) {
         // Handle error
         console.log(error)
-        alert("Request Failed")
+        toast.error("Request Failed")
       }
       finally {
         setLoading(false);
@@ -78,7 +86,6 @@ export default function updateDeliveryAddress() {
     } else {
       setErrors(errors);
       setLoading(false);
-
     }
   };
 
@@ -122,6 +129,8 @@ export default function updateDeliveryAddress() {
           )}
         </button>
       </form>
+
+      <ToastContainer />
     </div>
   );
 }
