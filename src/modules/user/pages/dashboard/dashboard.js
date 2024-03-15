@@ -5,7 +5,10 @@ import UsidePanel from "../../../../components/user/sidepanel/usidepanel";
 import ProfileIcon from "../../../../assets/images/rectangle-user-icon.png";
 import "./dashboard.css";
 import { RxPlusCircled } from "react-icons/rx";
-import Table from "react-bootstrap/Table";
+// import Table from "react-bootstrap/Table";
+
+import { Table, Button, Modal } from "react-bootstrap";
+import axios from "axios";
 
 const dashboard = () => {
   const userid = localStorage.getItem("userid");
@@ -15,6 +18,10 @@ const dashboard = () => {
   const [dataerror, setDataerror] = useState(true);
   const [isordercomplete, setisisordercomplete] = useState(true);
   const navigate = useNavigate();
+
+  const [showTimelineModal, setShowTimelineModal] = useState(false);
+  const [timelineData, setTimelineData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     gOrderList();
@@ -42,6 +49,36 @@ const dashboard = () => {
       setDataerror(false);
     }
   };
+
+  const handleViewTimeline = async (orderId) => {
+    setLoading(true);
+    try {
+      const response = await fetchTimelineData(orderId);
+      setTimelineData(response);
+      setShowTimelineModal(true);
+    } catch (error) {
+      console.error("Error fetching timeline data:", error);
+    }
+    setLoading(false);
+  };
+
+
+  const fetchTimelineData = async (orderId) => {
+    try {
+        const response = await axios.get(`http://localhost:8000/get/delivery/timeline/${orderId}`);
+      
+        return response.data.orderTimeline;
+    } catch (error) {
+        console.error("Error fetching timeline data:", error);
+        return [];
+    }
+};
+
+  const handleCloseTimelineModal = () => {
+    setShowTimelineModal(false);
+    setTimelineData([]);
+  };
+
 
   const resumeOrder = (orderid) => {
     localStorage.setItem("Porderid", orderid);
@@ -102,6 +139,7 @@ const dashboard = () => {
                           <th>Total Cards</th>
                           <th>View Grades</th>
                           <th>Payment Link</th>
+                          <th>View Timeline</th>
                           {/* <th>Order Details</th> */}
                         </tr>
 
@@ -121,6 +159,11 @@ const dashboard = () => {
                               <Link to="#" className="text-dark">
                                 Payment Link
                               </Link>
+                            </td>
+                            <td>
+                              <Button variant="link" onClick={() => handleViewTimeline(order.orderid)}>
+                                View Timeline
+                              </Button>
                             </td>
                             {/* <td>
                               {order.isordercomplete ? (
@@ -168,6 +211,39 @@ const dashboard = () => {
           </div>
         </div>
       </div>
+
+      <Modal show={showTimelineModal} onHide={handleCloseTimelineModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Timeline</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="">
+            {loading ? (
+              <p>Loading...</p>
+            ) : timelineData.length === 0 ? (
+              <p>No timeline data found</p>
+            ) : (
+              <ul className="list-unstyled">
+                {timelineData.map((item, index) => (
+                  <li key={index} className="timeline-item d-flex align-items-center gap-4 mt-4">
+                    <div className="timeline-icon mr-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 6v6l4 2" />
+                      </svg>
+                    </div>
+                    <div className="timeline-content">
+                      <h2 className="h5 mb-0">{item.status}</h2>
+                      <span className="small text-gray">{new Date(item.timestamp).toLocaleString()}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </Modal.Body>
+      </Modal>
+
     </>
   );
 };
