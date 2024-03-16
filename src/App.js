@@ -47,6 +47,7 @@ import AddUsers from "./modules/admin/pages/manage-users/addUsers";
 import Invoice from "./modules/admin/pages/invoice";
 import InvoicesDashboard from "./modules/admin/pages/invoicesDashboard";
 import UpdateDeliveryAddress from "./modules/user/pages/updateDeliveryAddress"
+import PaymentFailed from "./modules/user/pages/payment"
 
 function App() {
   return (
@@ -65,6 +66,7 @@ function App() {
         <Route path="user/review-list/" element={<UReviewList />} />
         <Route path="user/help" element={<UHelp />} />
         <Route path="user/query-list" element={<UHelpList />} />
+        <Route path="/user/payment/Failed" element={<PaymentFailed />} />
         <Route path="user/add-new-delivery-address/:_id" element={<UpdateDeliveryAddress />} />
         <Route
           path="user/view-Order/shipping-details"
