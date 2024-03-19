@@ -123,7 +123,7 @@ const dashboard = () => {
                               </Link>{" "}
                             </td>
                             <td>
-                              <Link to={order.paymentlink=="No Link"?"#":order.paymentlink} className="text-dark">
+                              <Link to={order.isorderpaid || order.paymentlink=="No Link"?"#":order.paymentlink} className="text-dark">
                                 Payment Link
                               </Link>
                             </td>
