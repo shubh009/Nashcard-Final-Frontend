@@ -128,8 +128,8 @@ const CustomTable = ({ data, pageNumber, setPageNumber  }) => {
                   </TableCell>
                   <TableCell style={{ color: '#5f8ec3', fontWeight: '600' }}>{el.invoiceNumber}</TableCell>
                   <TableCell style={{ color: '#5f8ec3', fontWeight: '600' }}>{el.user}</TableCell>
-                  <TableCell style={{ fontWeight: '600' }}>₹{el.amount}</TableCell>
-                  <TableCell style={{ fontWeight: '600' }}>₹{el.balance}</TableCell>
+                  <TableCell style={{ fontWeight: '600' }}>${el.amount}</TableCell>
+                  <TableCell style={{ fontWeight: '600' }}>${el.balance}</TableCell>
                   <TableCell style={{ fontWeight: '600' }}>
                     {new Date(el.createdDate).toLocaleString('en-US', {
                       year: 'numeric',

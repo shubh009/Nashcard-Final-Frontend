@@ -13,7 +13,7 @@ import React from 'react';
 ChartJS.register(BarElement, Tooltip, Legend, CategoryScale, LinearScale);
 
 const Chart = ({ state, setData }) => {
-  const colors = ['#2995bd', '#51b730', '#1890ef', '#bb323d'];
+  const colors = ['#2995bd', '#51b730', '#bb4e28',"#bb4e28"];
 
   return (
     <>
@@ -30,22 +30,22 @@ const Chart = ({ state, setData }) => {
                 labels: ['1', '2', '3', '4', '5'],
                 datasets: [
                   {
-                    label: 'Invoices',
+                    label: 'Invoices Amounts',
                     data: [state.total[0].totalAmount],
                     backgroundColor: colors[0],
                   },
                   {
-                    label: 'Payments',
+                    label: 'Received Amount',
                     data: [state.total[0].payments],
                     backgroundColor: colors[1],
                   },
+                  // {
+                  //   label: 'Expenses',
+                  //   data: [state.total[0].totalExpenses],
+                  //   backgroundColor: colors[2],
+                  // },
                   {
-                    label: 'Expenses',
-                    data: [state.total[0].totalExpenses],
-                    backgroundColor: colors[2],
-                  },
-                  {
-                    label: 'Outstanding',
+                    label: 'Outstanding Amount',
                     data: [state.total[0].totalBalance],
                     backgroundColor: colors[3],
                   },
