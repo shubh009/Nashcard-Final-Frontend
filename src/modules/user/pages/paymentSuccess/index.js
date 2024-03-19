@@ -14,21 +14,21 @@ export default function index() {
         height="100"
         viewBox="0 0 24 24"
         fill="none"
-        stroke="red"
+        stroke="green"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
         style={{ marginBottom: '20px' }}
       >
-        <circle cx="12" cy="12" r="10" />
-        <line x1="12" y1="8" x2="12" y2="12" />
-        <line x1="12" y1="16" x2="12" y2="16" />
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+        <polyline points="22 4 12 14.01 9 11.01" />
       </svg>
-      <h2 style={{ marginBottom: '20px' }}>Payment Failed</h2>
+
+      <h2 style={{ marginBottom: '20px' }}>Payment Success</h2>
 
 
-      <Button variant="outlined" onClick={()=>{ navigate("/user/dashbaord") }}>
-        Go To Home
+      <Button variant="outlined" onClick={() => { navigate("/user/dashbaord") }}>
+        Go To Dashbaord
       </Button>
 
     </div>
