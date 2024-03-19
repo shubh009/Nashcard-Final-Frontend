@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import NashcardLogo from "../../../../assets/images/nashcard-logo.png";
 
 
 const InputField = ({ label, value, onChange, error }) => {
@@ -90,46 +91,55 @@ export default function updateDeliveryAddress() {
   };
 
   return (
-    <div className="container">
-      <h1 className='mt-4' >Add New Delivery Address</h1>
-      <form>
-        <InputField
-          label="State"
-          value={state}
-          onChange={(e) => handleInputChange(e, setState)}
-          error={errors.state}
-        />
-        <InputField
-          label="Country"
-          value={country}
-          onChange={(e) => handleInputChange(e, setCountry)}
-          error={errors.country}
-        />
-        <InputField
-          label="City"
-          value={city}
-          onChange={(e) => handleInputChange(e, setCity)}
-          error={errors.city}
-        />
-        <InputField
-          label="Pincode"
-          value={pincode}
-          onChange={(e) => handleInputChange(e, setPincode)}
-          error={errors.pincode}
-        />
-        <button type="button" className="btn btn-primary mt-4" onClick={handleSubmit} disabled={loading}>
-          {loading ? (
-            <div className="d-flex gap-2 align-items-center">
-              <span className="">Please Wait</span>
-              <span className="spinner-border spinner-border-sm" role="status"></span>
-            </div>
+    <div className="container" >
+      <div className="row justify-content-center mt-10 align-items-center " style={{ height: "100vh" }}>
+        <div className="" style={{ maxWidth: "400px" }}>
+          <div className="text-center">
+            <img src={NashcardLogo} className="img-fluid" alt="Nashcard Logo" style={{ maxWidth: "200px", height: "100px" }} />
+          </div>
 
-          ) : (
-            <span>Submit</span>
-          )}
-        </button>
-      </form>
+          <h3 className="fw-bold mt-4 mb-4">Add New Delivery Address</h3>
 
+          {/* <h1 className='mt-4'></h1> */}
+          <form>
+            <InputField
+              label="State"
+              value={state}
+              onChange={(e) => handleInputChange(e, setState)}
+              error={errors.state}
+            />
+            <InputField
+              label="Country"
+              value={country}
+              onChange={(e) => handleInputChange(e, setCountry)}
+              error={errors.country}
+            />
+            <InputField
+              label="City"
+              value={city}
+              onChange={(e) => handleInputChange(e, setCity)}
+              error={errors.city}
+            />
+            <InputField
+              label="Pincode"
+              value={pincode}
+              onChange={(e) => handleInputChange(e, setPincode)}
+              error={errors.pincode}
+            />
+            <button type="button" className="btn btn-primary mt-3 border-0" onClick={handleSubmit} disabled={loading} style={{ backgroundColor: "#f1592a", width: "100%", height:"45px" }}>
+              {loading ? (
+                <div className="d-flex gap-2 align-items-center justify-content-center  ">
+                  <span className="">Please Wait</span>
+                  <span className="spinner-border spinner-border-sm" role="status"></span>
+                </div>
+              ) : (
+                <span>Submit</span>
+              )}
+            </button>
+
+          </form>
+        </div>
+      </div>
       <ToastContainer />
     </div>
   );
