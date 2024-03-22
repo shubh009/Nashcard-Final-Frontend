@@ -100,8 +100,8 @@ const CustomTable = ({ data, pageNumber, setPageNumber  }) => {
               <TableCell style={{ color: '#f0592a' }}>STATUS</TableCell>
               <TableCell style={{ color: '#f0592a' }}>INVOICE NO.</TableCell>
               <TableCell style={{ color: '#f0592a' }}>CLIENT</TableCell>
-              <TableCell style={{ color: '#f0592a' }}>AMOUNT</TableCell>
-              <TableCell style={{ color: '#f0592a' }}>BALANCE</TableCell>
+              <TableCell style={{ color: '#f0592a' }}>INVOICE AMOUNT</TableCell>
+              {/* <TableCell style={{ color: '#f0592a' }}>BALANCE</TableCell> */}
               <TableCell style={{ color: '#f0592a' }}>DATE</TableCell>
               <TableCell style={{ color: '#f0592a' }}>DUE DATE</TableCell>
               <TableCell style={{ color: '#f0592a' }}>Actions</TableCell>
@@ -129,7 +129,7 @@ const CustomTable = ({ data, pageNumber, setPageNumber  }) => {
                   <TableCell style={{ color: '#5f8ec3', fontWeight: '600' }}>{el.invoiceNumber}</TableCell>
                   <TableCell style={{ color: '#5f8ec3', fontWeight: '600' }}>{el.user}</TableCell>
                   <TableCell style={{ fontWeight: '600' }}>${el.amount}</TableCell>
-                  <TableCell style={{ fontWeight: '600' }}>${el.balance}</TableCell>
+                  {/* <TableCell style={{ fontWeight: '600' }}>${el.balance}</TableCell> */}
                   <TableCell style={{ fontWeight: '600' }}>
                     {new Date(el.createdDate).toLocaleString('en-US', {
                       year: 'numeric',

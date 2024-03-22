@@ -9,12 +9,13 @@ function Insight({ state }) {
     >
       {/* <h4 className="mx-4 py-3">Welcome! Glad to see you.</h4> */}
       {/* <div className="border"></div> */}
-      <h3 className="mx-4 mt-3">Invoices transactions</h3>
+      <h3 className="mx-4 mt-4 mb-4">Invoices transactions</h3>
       {/* <p className="ms-4" style={{ fontSize: '18px' }}>
         Here are your company&apos;s most recent <br />
         transactions:
       </p> */}
-      <div className="mt-5 mx-4 mb-3 d-flex align-items-center justify-content-between">
+      <div className="border "></div>
+      <div className="mt-3 mx-4 mb-3 d-flex align-items-center justify-content-between">
         <h5 style={{ color: '#5f6064' }}>Invoices Amount</h5>
         <span
           className="border px-4 rounded text-white fw-bold d-flex justify-content-center align-items-center"
@@ -23,7 +24,7 @@ function Insight({ state }) {
           ${state.total[0].totalAmount}
         </span>
       </div>
-      <div className="border"></div>
+      {/* <div className="border"></div> */}
       <div className="my-3 mx-4 d-flex align-items-center justify-content-between">
         <h5 style={{ color: '#5f6064' }}>Received Amount  </h5>
         <span
@@ -33,7 +34,7 @@ function Insight({ state }) {
           ${state.total[0].totalBalance}
         </span>
       </div>
-      <div className="border"></div>
+      {/* <div className="border"></div> */}
       {/* <div className="my-3 mx-4 d-flex align-items-center justify-content-between">
         <h5 style={{ color: '#5f6064' }}>Expenses</h5>
         <span
@@ -43,7 +44,7 @@ function Insight({ state }) {
           ${state.total[0].totalExpenses}
         </span>
       </div> */}
-      <div className="border"></div>
+      {/* <div className="border"></div> */}
       <div className="my-3 mx-4 d-flex align-items-center justify-content-between">
         <h5 style={{ color: '#5f6064' }}>Outstanding Amount</h5>
         <span
@@ -55,12 +56,29 @@ function Insight({ state }) {
       </div>
       <div className="border"></div>
       <div className="my-3 mx-4 d-flex align-items-center justify-content-between">
+        <h5 style={{ color: '#5f6064' }}> Pending Invoices </h5>
+        <span
+          className="border px-4 rounded fw-bold d-flex justify-content-center align-items-center"
+          style={{ backgroundColor: '#ffff', height: '32px', color: '#5f6064' }}
+        >
+          {state.pendingCount[0] ? state.pendingCount[0].pendingCount : 0}
+        </span>
+      </div>    <div className="my-3 mx-4 d-flex align-items-center justify-content-between">
+        <h5 style={{ color: '#5f6064' }}> Paid Invoices </h5>
+        <span
+          className="border px-4 rounded fw-bold d-flex justify-content-center align-items-center"
+          style={{ backgroundColor: '#ffff', height: '32px', color: '#5f6064' }}
+        >
+          {state.paidCount && state.paidCount[0] ? state.paidCount[0].paidCount : 0}
+
+        </span>
+      </div>    <div className="my-3 mx-4 d-flex align-items-center justify-content-between">
         <h5 style={{ color: '#5f6064' }}>Total Invoices </h5>
         <span
           className="border px-4 rounded fw-bold d-flex justify-content-center align-items-center"
           style={{ backgroundColor: '#ffff', height: '32px', color: '#5f6064' }}
         >
-          {state.pendingCount[0].pendingCount}
+          {state.totalCount[0] && state.totalCount[0] ? state.totalCount[0].totalCount : 0}
         </span>
       </div>
       {/* <div className="border" style={{ marginBottom: '50px' }}></div> */}

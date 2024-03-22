@@ -27,7 +27,7 @@ const Chart = ({ state, setData }) => {
           {state && (
             <Bar
               data={{
-                labels: ['1', '2', '3', '4', '5'],
+                labels: [' ', ' ', ' ', ' ', ' '],
                 datasets: [
                   {
                     label: 'Invoices Amounts',
@@ -36,7 +36,7 @@ const Chart = ({ state, setData }) => {
                   },
                   {
                     label: 'Received Amount',
-                    data: [state.total[0].payments],
+                    data: [state.total[0].totalBalance],
                     backgroundColor: colors[1],
                   },
                   // {
@@ -46,7 +46,7 @@ const Chart = ({ state, setData }) => {
                   // },
                   {
                     label: 'Outstanding Amount',
-                    data: [state.total[0].totalBalance],
+                    data: [state.total[0].payments],
                     backgroundColor: colors[3],
                   },
                 ],

@@ -56,7 +56,7 @@ const FilterBar = ({ data, setData, pageNumber  }) => {
           style={{ width: '160px' }}
         >
           <MenuItem value="">Filter by status</MenuItem>
-          <MenuItem value="paid">Paid</MenuItem>
+          <MenuItem value="Paid">Paid</MenuItem>
           <MenuItem value="pending">Pending</MenuItem>
         </Select>
       </div>
