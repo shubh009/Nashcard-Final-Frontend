@@ -123,9 +123,12 @@ const dashboard = () => {
                               </Link>{" "}
                             </td>
                             <td>
-                              <Link to={order.isorderpaid || order.paymentlink=="No Link"?"#":order.paymentlink} className="text-dark">
+                            <Link to={`/user/add-new-delivery-address/${order.orderid}`} className="text-dark">
+                            Payment Link
+                            </Link>
+                              {/* <Link to={order.isorderpaid || order.paymentlink=="No Link"?"#":order.paymentlink} className="text-dark">
                                 Payment Link
-                              </Link>
+                              </Link> */}
                             </td>
                             {/* <td>
                               {order.isordercomplete ? (

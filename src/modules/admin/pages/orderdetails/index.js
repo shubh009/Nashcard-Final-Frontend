@@ -1917,7 +1917,7 @@ const index = () => {
                         </li>
 
                         {/* Send Delivery Address Update Link button */}
-                        <SendDeliveryAddressUpdateLink />
+                        {/* <SendDeliveryAddressUpdateLink /> */}
 
                         {/* update order timeline */}
                         <UpdateDeliveryTimeline />

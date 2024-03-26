@@ -58,11 +58,11 @@ function Insight({ state }) {
       <div className="my-3 mx-4 d-flex align-items-center justify-content-between">
         <h5 style={{ color: '#5f6064' }}> Pending Invoices </h5>
         <span
-          className="border px-4 rounded fw-bold d-flex justify-content-center align-items-center"
-          style={{ backgroundColor: '#ffff', height: '32px', color: '#5f6064' }}
-        >
-          {state.pendingCount[0] ? state.pendingCount[0].pendingCount : 0}
-        </span>
+  className="border px-4 rounded fw-bold d-flex justify-content-center align-items-center"
+  style={{ backgroundColor: '#ffff', height: '32px', color: '#5f6064' }}
+>
+  {(state.pendingCount && state.pendingCount[0] && state.pendingCount[0].pendingCount) || 0}
+</span>
       </div>    <div className="my-3 mx-4 d-flex align-items-center justify-content-between">
         <h5 style={{ color: '#5f6064' }}> Paid Invoices </h5>
         <span
@@ -78,7 +78,7 @@ function Insight({ state }) {
           className="border px-4 rounded fw-bold d-flex justify-content-center align-items-center"
           style={{ backgroundColor: '#ffff', height: '32px', color: '#5f6064' }}
         >
-          {state.totalCount[0] && state.totalCount[0] ? state.totalCount[0].totalCount : 0}
+          {state.totalCount && state.totalCount[0] ? state.totalCount[0].totalCount : 0}
         </span>
       </div>
       {/* <div className="border" style={{ marginBottom: '50px' }}></div> */}
