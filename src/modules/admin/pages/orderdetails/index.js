@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import Table from "react-bootstrap/esm/Table";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Uheader from "../../../../components/user/header/uheader";
 import UsidePanel from "../../../../components/admin/sidepanel/sidepanel";
+import UserSidePandel from "../../../../components/user/sidepanel/usidepanel"
 import { BiMessageEdit, BiCheckDouble, BiPlusCircle } from "react-icons/bi";
 import { AiOutlineDelete, AiOutlineShoppingCart } from "react-icons/ai";
 import { TbTableExport } from "react-icons/tb";
@@ -20,13 +21,24 @@ import SendDeliveryAddressUpdateLink from "./SendDeliveryAddressUpdateLink";
 import UpdateDeliveryTimeline from "./UpdateDeliveryTimeline";
 const index = () => {
   //local storage varaible
+  const param = useParams();
 
-  const userid = localStorage.getItem("aUdetailsId");
+  // admin or user
+  let userType = ""
+
+  if (param._id) { userType = "user" }
+  else { userType = "admin" }
+
   const orderid = localStorage.getItem("aUorderid");
+  const userid = localStorage.getItem("aUdetailsId");
   const upid = localStorage.getItem("aUdetailsId");
   const odid = localStorage.getItem("aUorderid");
   const grname = localStorage.getItem("aGradingCompanyName");
   const idperorder = localStorage.getItem("idperorder");
+
+
+
+
   // const userid =7116
   // const orderid="SG-33043"
   // const upid=7116
@@ -175,6 +187,11 @@ const index = () => {
   const [editSelectService, setEditSelectService] = useState("");
   const [editSelectStatus, setEditSelectStatus] = useState("");
 
+  const [timelineData, setTimelineData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+
   //Manage State to get the gradeList in Popup
   const [gradeList, setGradeList] = useState([]);
   const [OrderStatus, setOrderStatus] = useState("");
@@ -199,6 +216,8 @@ const index = () => {
   //code to bind service level based on grading company name
 
   const bindServiceLevelDDL = async () => {
+
+
     let response = await fetch(
       `${process.env.REACT_APP_API_URL}/getservicelevel/` + grname,
       {
@@ -299,7 +318,26 @@ const index = () => {
     bindServiceLevelDDL();
     bindorderStatus();
     getdataGrades();
+
+    if (userType == "user") {
+      fetchTimelineData();
+    }
+
   }, []);
+
+  const fetchTimelineData = async () => {
+    try {
+      // Fetch timeline data from the API
+      const response = await axios.get(`http://localhost:8000/get/delivery/timeline/${orderid}`);
+
+      setTimelineData(response.data.orderTimeline);
+      setLoading(false);
+    } catch (error) {
+      // Handle errors during data fetching
+      setError(error.message);
+      setLoading(false);
+    }
+  };
 
   const deletecard = async (_id) => {
     let result = await fetch(
@@ -479,15 +517,18 @@ const index = () => {
   };
   //
   const getcardlist = async () => {
+
+
     let result = await fetch(`${process.env.REACT_APP_API_URL}/getcardlist`, {
       method: "post",
-      body: JSON.stringify({ userid: userid }),
+      body: JSON.stringify({ userid: userid, orderid: orderid }),
       headers: {
         "content-type": "application/json",
       },
     });
 
     const result1 = await result.json();
+
     if (!result1.isEmpty) {
       setIsEmpty(false);
       setCardlistData(result1.cards);
@@ -1509,79 +1550,85 @@ const index = () => {
         />
         <div className="row">
           <div className="col-lg-2 noleftrightpadding">
-            <UsidePanel></UsidePanel>
+
+{userType=="user" ? <UserSidePandel></UserSidePandel>: <UsidePanel></UsidePanel> }
+            
           </div>
           <div className="col-lg-10 noleftrightpadding">
+
             <Uheader></Uheader>
+          
             {ODdetails.map((order) => (
               <>
-                <div className="col-lg-12 my-4 px-4">
-                  <ul className="list-inline">
-                    <li className="list-inline-item">
-                      <div>
-                        {order.isorderpaid ? (
+                {userType !== 'user' && (
+                  <div className="col-lg-12 my-4 px-4">
+                    <ul className="list-inline">
+                      <li className="list-inline-item">
+                        <div>
+                          {order.isorderpaid ? (
+                            <Link
+                              to="#"
+                              className="btn btn-secondary"
+                              onClick={(e) =>
+                                Statusnotify("Order already Marked as paid")
+                              }
+                            >
+                              <BiCheckDouble></BiCheckDouble> Order Paid: Done
+                            </Link>
+                          ) : (
+                            <div className="admintopmenu">
+                              <Link to="#" onClick={markorderpaid}>
+                                Mark Order Paid
+                              </Link>
+                            </div>
+                          )}
+                        </div>
+                      </li>
+                      <li className="list-inline-item">
+                        <div className="admintopmenu">
+                          <Link onClick={handleViewinfopopupShow}>
+                            View Customer Info
+                          </Link>
+                        </div>
+                      </li>
+                      <li className="list-inline-item">
+                        <div className="admintopmenu">
+                          <Link to="#" onClick={handlepsasubpopupshow}>
+                            PSA Copy
+                          </Link>
+                        </div>
+                      </li>
+
+                      <li className="list-inline-item">
+                        <div className="admintopmenu">
+                          <Link to="#" onClick={handlenonpsasubpopupshow}>
+                            Non PSA Copy
+                          </Link>
+                        </div>
+                      </li>
+                      <li className="list-inline-item">
+                        <div className="admintopmenu">
                           <Link
                             to="#"
-                            className="btn btn-secondary"
-                            onClick={(e) =>
-                              Statusnotify("Order already Marked as paid")
-                            }
+                            onClick={(e) => updateOrderStatus({ id: 1 })}
                           >
-                            <BiCheckDouble></BiCheckDouble> Order Paid: Done
+                            Mark As Logged
                           </Link>
-                        ) : (
-                          <div className="admintopmenu">
-                            <Link to="#" onClick={markorderpaid}>
-                              Mark Order Paid
-                            </Link>
-                          </div>
-                        )}
-                      </div>
-                    </li>
-                    <li className="list-inline-item">
-                      <div className="admintopmenu">
-                        <Link onClick={handleViewinfopopupShow}>
-                          View Customer Info
-                        </Link>
-                      </div>
-                    </li>
-                    <li className="list-inline-item">
-                      <div className="admintopmenu">
-                        <Link to="#" onClick={handlepsasubpopupshow}>
-                          PSA Copy
-                        </Link>
-                      </div>
-                    </li>
-
-                    <li className="list-inline-item">
-                      <div className="admintopmenu">
-                        <Link to="#" onClick={handlenonpsasubpopupshow}>
-                          Non PSA Copy
-                        </Link>
-                      </div>
-                    </li>
-                    <li className="list-inline-item">
-                      <div className="admintopmenu">
-                        <Link
-                          to="#"
-                          onClick={(e) => updateOrderStatus({ id: 1 })}
-                        >
-                          Mark As Logged
-                        </Link>
-                      </div>
-                    </li>
-                    {/* <li className="list-inline-item">
+                        </div>
+                      </li>
+                      {/* <li className="list-inline-item">
                      <div className="admintopmenu">
                         <Link to="#">Order History</Link>
                       </div>
                   </li> */}
-                    <li className="list-inline-item">
-                      <div className="admintopmenu">
-                        <Link to="#">TAX Reciept</Link>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
+                      <li className="list-inline-item">
+                        <div className="admintopmenu">
+                          <Link to="#">TAX Reciept</Link>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                )}
                 <div className="Dashboardsec box-shadow helpform">
                   <div className="row">
                     <div className="Topl">
@@ -1831,251 +1878,256 @@ const index = () => {
                     </div>
                   </div>
 
-                  <div className="col-lg-12 my-2">
-                    <div className="row">
-                      <ul className="list-inline">
-                        <li className="list-inline-item">
-                          <div className="admintopmenu">
-                            <Link to="#" onClick={handleEditShow}>
-                              Edit Order
-                            </Link>
-                          </div>
-                        </li>
-                        <li className="list-inline-item">
-                          <div className="admintopmenu">
-                            <Link to="#" onClick={handleEditGradeShow}>
-                              Edit Grades
-                            </Link>
-                          </div>
-                        </li>
-                        <li className="list-inline-item">
-                          <div className="admintopmenu">
-                            <Link
-                              to="#"
-                              onClick={(e) => sendOrderStatusOnEmail({ id: 1 })}
-                            >
-                              Send Status Update
-                            </Link>
-                          </div>
-                        </li>
-                        <li className="list-inline-item">
-                          <div className="admintopmenu">
-                            <Link to="#">Send Print Label to Ship</Link>
-                          </div>
-                        </li>
+                  {userType !== 'user' && (
+                    <div className="col-lg-12 my-2">
+                      <div className="row">
+                        <ul className="list-inline">
+                          <li className="list-inline-item">
+                            <div className="admintopmenu">
+                              <Link to="#" onClick={handleEditShow}>
+                                Edit Order
+                              </Link>
+                            </div>
+                          </li>
+                          <li className="list-inline-item">
+                            <div className="admintopmenu">
+                              <Link to="#" onClick={handleEditGradeShow}>
+                                Edit Grades
+                              </Link>
+                            </div>
+                          </li>
+                          <li className="list-inline-item">
+                            <div className="admintopmenu">
+                              <Link
+                                to="#"
+                                onClick={(e) => sendOrderStatusOnEmail({ id: 1 })}
+                              >
+                                Send Status Update
+                              </Link>
+                            </div>
+                          </li>
+                          <li className="list-inline-item">
+                            <div className="admintopmenu">
+                              <Link to="#">Send Print Label to Ship</Link>
+                            </div>
+                          </li>
 
-                        <li className="list-inline-item">
-                          <div className="admintopmenu">
-                            <Link
-                              to="#"
-                              onClick={(e) => sendOrderStatusOnEmail({ id: 2 })}
-                            >
-                              Send Reminder To Pay
-                            </Link>
-                          </div>
-                        </li>
-                        <li className="list-inline-item">
-                          <div className="admintopmenu">
-                            <Link
-                              to="#"
-                              onClick={(e) => sendOrderStatusOnEmail({ id: 3 })}
-                            >
-                              Send Grade Pop Reminder
-                            </Link>
-                          </div>
-                        </li>
-                        <li className="list-inline-item mt-3">
-                          <div className="admintopmenu">
-                            <Link
-                              to="#"
-                              onClick={(e) => sendOrderStatusOnEmail({ id: 4 })}
-                            >
-                              Email Customer Reciept(walk-ins){" "}
-                            </Link>
-                          </div>
-                        </li>
+                          <li className="list-inline-item">
+                            <div className="admintopmenu">
+                              <Link
+                                to="#"
+                                onClick={(e) => sendOrderStatusOnEmail({ id: 2 })}
+                              >
+                                Send Reminder To Pay
+                              </Link>
+                            </div>
+                          </li>
+                          <li className="list-inline-item">
+                            <div className="admintopmenu">
+                              <Link
+                                to="#"
+                                onClick={(e) => sendOrderStatusOnEmail({ id: 3 })}
+                              >
+                                Send Grade Pop Reminder
+                              </Link>
+                            </div>
+                          </li>
+                          <li className="list-inline-item mt-3">
+                            <div className="admintopmenu">
+                              <Link
+                                to="#"
+                                onClick={(e) => sendOrderStatusOnEmail({ id: 4 })}
+                              >
+                                Email Customer Reciept(walk-ins){" "}
+                              </Link>
+                            </div>
+                          </li>
 
-                        <li className="list-inline-item mt-3">
-                          <div className="admintopmenu">
-                            <Link
-                              to="#"
-                              onClick={(e) => updateOrderStatus({ id: 2 })}
-                            >
-                              Email Review Result{" "}
-                            </Link>
-                          </div>
-                        </li>
-                        <li className="list-inline-item mt-3">
-                          <div className="admintopmenu">
-                            <Link to="#">Packing List</Link>
-                          </div>
-                        </li>
-                        <li className="list-inline-item mt-3">
-                          <div className="admintopmenu">
-                            <Link to="/payment/invoice" >Send Invoice</Link>
-                          </div>
-                        </li>
+                          <li className="list-inline-item mt-3">
+                            <div className="admintopmenu">
+                              <Link
+                                to="#"
+                                onClick={(e) => updateOrderStatus({ id: 2 })}
+                              >
+                                Email Review Result{" "}
+                              </Link>
+                            </div>
+                          </li>
+                          <li className="list-inline-item mt-3">
+                            <div className="admintopmenu">
+                              <Link to="#">Packing List</Link>
+                            </div>
+                          </li>
+                          <li className="list-inline-item mt-3">
+                            <div className="admintopmenu">
+                              <Link to="/payment/invoice" >Send Invoice</Link>
+                            </div>
+                          </li>
 
-                        {/* Send Delivery Address Update Link button */}
-                        {/* <SendDeliveryAddressUpdateLink /> */}
+                          {/* Send Delivery Address Update Link button */}
+                          {/* <SendDeliveryAddressUpdateLink /> */}
 
-                        {/* update order timeline */}
-                        <UpdateDeliveryTimeline />
+                          {/* update order timeline */}
+                          <UpdateDeliveryTimeline />
 
-                      </ul>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
+                  )}
+
                 </div>
               </>
             ))}
 
-            <div className="Dashboardsec box-shadow helpform">
-              <div className="Topl mb-3">
-                <span className="heading-level-2">Add Cards</span>
-              </div>
-              <div className="row">
-                <div className="theme-highlight-div mb-4 text-center">
-                  <div className="form-group mt-4 mb-4">
-                    <form className="text-center mb-2">
-                      <input
-                        style={{ display: "none" }}
-                        ref={inputRef}
-                        type="file"
-                        onChange={handleFileChange}
-                      />
-                      <Link
-                        className="text-theme mb-1 d-block text-decoration-none"
-                        onClick={handleClick}
-                      >
-                        <BiPlusCircle></BiPlusCircle> Select A CSV File To
-                        Upload
-                      </Link>
-                      <label className="mb-2">{carduploadfilename}</label>
-                      <center>
-                        {" "}
-                        <button
-                          className="submitbtn d-block w270 text-center"
-                          type="submit"
-                          onClick={Addnewcard}
+            {userType !== 'user' && (
+              <div className="Dashboardsec box-shadow helpform">
+                <div className="Topl mb-3">
+                  <span className="heading-level-2">Add Cards</span>
+                </div>
+                <div className="row">
+                  <div className="theme-highlight-div mb-4 text-center">
+                    <div className="form-group mt-4 mb-4">
+                      <form className="text-center mb-2">
+                        <input
+                          style={{ display: "none" }}
+                          ref={inputRef}
+                          type="file"
+                          onChange={handleFileChange}
+                        />
+                        <Link
+                          className="text-theme mb-1 d-block text-decoration-none"
+                          onClick={handleClick}
                         >
-                          Log Cards Via CSV
-                        </button>
-                      </center>
-                    </form>
+                          <BiPlusCircle></BiPlusCircle> Select A CSV File To
+                          Upload
+                        </Link>
+                        <label className="mb-2">{carduploadfilename}</label>
+                        <center>
+                          {" "}
+                          <button
+                            className="submitbtn d-block w270 text-center"
+                            type="submit"
+                            onClick={Addnewcard}
+                          >
+                            Log Cards Via CSV
+                          </button>
+                        </center>
+                      </form>
 
-                    <p className="mb-1">Or</p>
-                    <p className="mb-1">
-                      Add match card below indivudaly by filling in all required
-                      fields.
-                    </p>
+                      <p className="mb-1">Or</p>
+                      <p className="mb-1">
+                        Add match card below indivudaly by filling in all required
+                        fields.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-lg-1">
-                  <div className="form-group">
-                    <label>Qty</label>
-                    <input
-                      onChange={(e) => setqty(e.target.value)}
-                      type="text"
-                      className="form-control"
-                      value={qty}
-                    ></input>
+                <div className="row">
+                  <div className="col-lg-1">
+                    <div className="form-group">
+                      <label>Qty</label>
+                      <input
+                        onChange={(e) => setqty(e.target.value)}
+                        type="text"
+                        className="form-control"
+                        value={qty}
+                      ></input>
+                    </div>
+                  </div>
+                  <div className="col-lg-2">
+                    <div className="form-group">
+                      <label>Card year</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        onChange={(e) => setCardyear(e.target.value)}
+                        value={cardyear}
+                      ></input>
+                    </div>
+                  </div>
+                  <div className="col-lg-1">
+                    <div className="form-group">
+                      <label>Brand</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        onChange={(e) => setbrand(e.target.value)}
+                        value={brand}
+                      ></input>
+                    </div>
+                  </div>
+                  <div className="col-lg-2">
+                    <div className="form-group">
+                      <label>Card Number</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        onChange={(e) => setcardnumber(e.target.value)}
+                        value={cardnumber}
+                      ></input>
+                    </div>
+                  </div>
+                  <div className="col-lg-2">
+                    <div className="form-group">
+                      <label>Player Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        onChange={(e) => setplayername(e.target.value)}
+                        value={playername}
+                      ></input>
+                    </div>
+                  </div>
+                  <div className="col-lg-2">
+                    <div className="form-group">
+                      <label>Attributes/SN</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        onChange={(e) => setattribute(e.target.value)}
+                        value={attribute}
+                      ></input>
+                    </div>
+                  </div>
+                  <div className="col-lg-2">
+                    <div className="form-group">
+                      <label>Total Declard Value</label>
+                      <input
+                        type="text"
+                        onChange={(e) => nsettotaldv(e.target.value)}
+                        className="form-control"
+                        value={ntotalDv}
+                      ></input>
+                    </div>
                   </div>
                 </div>
-                <div className="col-lg-2">
-                  <div className="form-group">
-                    <label>Card year</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      onChange={(e) => setCardyear(e.target.value)}
-                      value={cardyear}
-                    ></input>
-                  </div>
-                </div>
-                <div className="col-lg-1">
-                  <div className="form-group">
-                    <label>Brand</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      onChange={(e) => setbrand(e.target.value)}
-                      value={brand}
-                    ></input>
-                  </div>
-                </div>
-                <div className="col-lg-2">
-                  <div className="form-group">
-                    <label>Card Number</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      onChange={(e) => setcardnumber(e.target.value)}
-                      value={cardnumber}
-                    ></input>
-                  </div>
-                </div>
-                <div className="col-lg-2">
-                  <div className="form-group">
-                    <label>Player Name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      onChange={(e) => setplayername(e.target.value)}
-                      value={playername}
-                    ></input>
-                  </div>
-                </div>
-                <div className="col-lg-2">
-                  <div className="form-group">
-                    <label>Attributes/SN</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      onChange={(e) => setattribute(e.target.value)}
-                      value={attribute}
-                    ></input>
-                  </div>
-                </div>
-                <div className="col-lg-2">
-                  <div className="form-group">
-                    <label>Total Declard Value</label>
-                    <input
-                      type="text"
-                      onChange={(e) => nsettotaldv(e.target.value)}
-                      className="form-control"
-                      value={ntotalDv}
-                    ></input>
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-lg-4"></div>
-                <div className="col-lg-4 d-block text-center">
-                  {updatebtn ? (
-                    <button
-                      className="submitbtn d-block mt-4 mt-2"
-                      type="submit"
-                      onClick={updatecarddetails}
-                    >
-                      Update Logged Card Details
-                    </button>
-                  ) : (
-                    <button
-                      className="submitbtn d-block mt-4 mt-2"
-                      type="submit"
-                      onClick={Addnewcard}
-                    >
-                      Log Card
-                    </button>
-                  )}
+                <div className="row">
+                  <div className="col-lg-4"></div>
+                  <div className="col-lg-4 d-block text-center">
+                    {updatebtn ? (
+                      <button
+                        className="submitbtn d-block mt-4 mt-2"
+                        type="submit"
+                        onClick={updatecarddetails}
+                      >
+                        Update Logged Card Details
+                      </button>
+                    ) : (
+                      <button
+                        className="submitbtn d-block mt-4 mt-2"
+                        type="submit"
+                        onClick={Addnewcard}
+                      >
+                        Log Card
+                      </button>
+                    )}
 
-                  {/* <Link to="#" className="submitbtn d-block mt-4 mt-2">Log Card</Link> */}
+                    {/* <Link to="#" className="submitbtn d-block mt-4 mt-2">Log Card</Link> */}
+                  </div>
+                  <div className="col-lg-4"></div>
                 </div>
-                <div className="col-lg-4"></div>
               </div>
-            </div>
+            )}
 
             <div className="Dashboardsec box-shadow">
               <div className="row orer-details">
@@ -2084,17 +2136,19 @@ const index = () => {
                     <div className="col-lg-9">
                       <span className="heading-level-2">Your Logged Cards</span>
                     </div>
-                    <div className="col-lg-3">
-                      <DownloadTableExcel
-                        filename="Cards Records"
-                        sheet="Cards Data"
-                        currentTableRef={tableRef.current}
-                      >
-                        <button className="submitbtn w270">
-                          <TbTableExport></TbTableExport> Export To excel{" "}
-                        </button>
-                      </DownloadTableExcel>
-                    </div>
+                    {userType !== 'user' && (
+                      <div className="col-lg-3">
+                        <DownloadTableExcel
+                          filename="Cards Records"
+                          sheet="Cards Data"
+                          currentTableRef={tableRef.current}
+                        >
+                          <button className="submitbtn w270">
+                            <TbTableExport></TbTableExport> Export To excel{" "}
+                          </button>
+                        </DownloadTableExcel>
+                      </div>
+                    )}
                   </div>
 
                   {isEmpty ? (
@@ -2159,130 +2213,201 @@ const index = () => {
                 </div>
               </div>
             </div>
-            <div className="row">
-              <div className="col-lg-6">
-                <div className="Dashboardsec box-shadow">
-                  <div className="Topl mb-3">
-                    <span className="heading-level-2">Add PSA SUB #</span>
-                  </div>
-                  <div>
-                    <div className="form-group">
-                      <label className="fw-bold">PSA SUB #</label>
-                      <input
-                        type="text"
-                        onChange={(e) => setpsasubno(e.target.value)}
-                        value={psasubno}
-                        className="form-control"
-                      ></input>
-                    </div>
-                    <div className="form-group">
-                      <label className="fw-bold">Order Status</label>
-                      <select
-                        name="ServiceLevel"
-                        id="ServiceLevel"
-                        className="form-control"
-                        disabled
-                      >
-                        <option value="1" key="ddl name" name="select">
-                          Awating Card List
-                        </option>
-                      </select>
-                    </div>
-                    <p className="mt-3">Add number on individual basis </p>
-                    <p>
-                      This sets status to:{" "}
-                      <span className="bg-danger px-3 py-1 text-white rounded-3 mt-2">
-                        Cards Logged
-                      </span>{" "}
-                    </p>
-                    <p>
-                      <b>NOTE:</b> This does NOT send an email OR update Card
-                      status. This is done on the Order Logging Screen when you
-                      click Mark as Logged.
-                      <span className="fw-bold">
-                        HOWEVER, IF status above is Cards Rec'd, Cards Sent to
-                        PSA or Grades Popped, this WILL update PSA # in the Card
-                        list as shown above.
-                      </span>
-                    </p>
-                    <p>
-                      <b> Protip:</b> Add a temporary number here like 999. Then
-                      go back to the main orders screen and do a bulk update and
-                      set condition of when PSA Sub # is 999 set PSA Sub # to
-                      actual submission number given.
-                    </p>
 
-                    <button
-                      className="submitbtn d-block mt-4 mt-2"
-                      type="submit"
-                      onClick={updatePSANo}
-                    >
-                      Add PSA SUB
-                    </button>
+            {userType !== 'user' && (
+              <div className="row">
+                <div className="col-lg-6">
+                  <div className="Dashboardsec box-shadow">
+                    <div className="Topl mb-3">
+                      <span className="heading-level-2">Add PSA SUB #</span>
+                    </div>
+                    <div>
+                      <div className="form-group">
+                        <label className="fw-bold">PSA SUB #</label>
+                        <input
+                          type="text"
+                          onChange={(e) => setpsasubno(e.target.value)}
+                          value={psasubno}
+                          className="form-control"
+                        ></input>
+                      </div>
+                      <div className="form-group">
+                        <label className="fw-bold">Order Status</label>
+                        <select
+                          name="ServiceLevel"
+                          id="ServiceLevel"
+                          className="form-control"
+                          disabled
+                        >
+                          <option value="1" key="ddl name" name="select">
+                            Awating Card List
+                          </option>
+                        </select>
+                      </div>
+                      <p className="mt-3">Add number on individual basis </p>
+                      <p>
+                        This sets status to:{" "}
+                        <span className="bg-danger px-3 py-1 text-white rounded-3 mt-2">
+                          Cards Logged
+                        </span>{" "}
+                      </p>
+                      <p>
+                        <b>NOTE:</b> This does NOT send an email OR update Card
+                        status. This is done on the Order Logging Screen when you
+                        click Mark as Logged.
+                        <span className="fw-bold">
+                          HOWEVER, IF status above is Cards Rec'd, Cards Sent to
+                          PSA or Grades Popped, this WILL update PSA # in the Card
+                          list as shown above.
+                        </span>
+                      </p>
+                      <p>
+                        <b> Protip:</b> Add a temporary number here like 999. Then
+                        go back to the main orders screen and do a bulk update and
+                        set condition of when PSA Sub # is 999 set PSA Sub # to
+                        actual submission number given.
+                      </p>
+
+                      <button
+                        className="submitbtn d-block mt-4 mt-2"
+                        type="submit"
+                        onClick={updatePSANo}
+                      >
+                        Add PSA SUB
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="Dashboardsec box-shadow">
-                  <div className="row">
-                    <div className="col-lg-6">
-                      <div className="Topl mb-3">
-                        <span className="heading-level-2">Order Notes</span>
+                <div className="col-lg-6">
+                  <div className="Dashboardsec box-shadow">
+                    <div className="row">
+                      <div className="col-lg-6">
+                        <div className="Topl mb-3">
+                          <span className="heading-level-2">Order Notes</span>
+                        </div>
+                      </div>
+                      <div className="col-lg-6">
+                        <Link className="topbtn" onClick={handleShow}>
+                          Add New Note
+                        </Link>
                       </div>
                     </div>
-                    <div className="col-lg-6">
-                      <Link className="topbtn" onClick={handleShow}>
-                        Add New Note
-                      </Link>
-                    </div>
+
+                    <>
+                      {isorderNotes ? (
+                        ordernotes.map((notes) => (
+                          <div className="statebox mb-3 mt-3" key={notes._id}>
+                            <div className="row">
+                              <div className="col-lg-8">
+                                <div className="form-group">
+                                  <label className="heading-level-4">
+                                    Notes Date
+                                  </label>
+                                  <label>{notes.notedate}</label>
+                                </div>
+                              </div>
+                              <div className="col-lg-4">
+                                <div className="form-group">
+                                  <label className="heading-level-4">
+                                    User Name
+                                  </label>
+                                  <label>{notes.adminid}</label>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <label className="heading-level-4">Notes:</label>
+                              <p>{notes.notes}</p>
+                            </div>
+
+                            <div className="row">
+                              <button
+                                className="btn-danger"
+                                onClick={() => handleDelete(notes)}
+                              >
+                                Delete Note
+                              </button>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <label className="text-danger">
+                          No Order Notes Found for this details
+                        </label>
+                      )}
+                    </>
                   </div>
-
-                  <>
-                    {isorderNotes ? (
-                      ordernotes.map((notes) => (
-                        <div className="statebox mb-3 mt-3" key={notes._id}>
-                          <div className="row">
-                            <div className="col-lg-8">
-                              <div className="form-group">
-                                <label className="heading-level-4">
-                                  Notes Date
-                                </label>
-                                <label>{notes.notedate}</label>
-                              </div>
-                            </div>
-                            <div className="col-lg-4">
-                              <div className="form-group">
-                                <label className="heading-level-4">
-                                  User Name
-                                </label>
-                                <label>{notes.adminid}</label>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="row">
-                            <label className="heading-level-4">Notes:</label>
-                            <p>{notes.notes}</p>
-                          </div>
-
-                          <div className="row">
-                            <button
-                              className="btn-danger"
-                              onClick={() => handleDelete(notes)}
-                            >
-                              Delete Note
-                            </button>
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <label className="text-danger">
-                        No Order Notes Found for this details
-                      </label>
-                    )}
-                  </>
                 </div>
               </div>
-            </div>
+            )}
+
+            {userType == 'user' && (
+              <div className="Dashboardsec box-shadow">
+                <div className="row orer-details">
+                  <div className="Topl mb-3">
+                    <div className="row">
+                      <div className="col-lg-9">
+                        <span className="heading-level-2">Delivery Timeline</span>
+                      </div>
+                    </div>
+
+                    <div className="">
+                      {loading ? (
+                        <p>Loading...</p>
+                      ) : error ? (
+                        // Display error message if an error occurred during data fetching
+                        <p>{error}</p>
+                      ) :
+                        // Display 'No data found' message if no timeline data is available 
+                        timelineData.length === 0 ? (
+                          <p className="text-danger mt-3 fs-5 fw-semibold" >No delivery timeline present</p>
+                        ) : (
+
+                          // Render timeline items if data is available
+                          <ul className="list-unstyled">
+                            {timelineData.map((item, index) => (
+                              <li key={index} className="timeline-item d-flex align-items-center gap-4 mt-4">
+
+                                {/* Timeline icon */}
+                                <div className="timeline-icon mr-3">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  >
+                                    {/* Clock icon */}
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M12 6v6l4 2" />
+                                  </svg>
+                                </div>
+
+                                {/* Timeline content */}
+                                <div className="timeline-content">
+                                  <h2 className="h5 mb-0">{item.status}</h2>
+                                  <span className="small text-gray">
+
+                                    {/* Convert timestamp to localized date and time string */}
+                                    {new Date(item.timestamp).toLocaleString()}
+                                  </span>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            )}
+
           </div>
         </div>
       </div>
