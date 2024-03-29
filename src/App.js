@@ -70,6 +70,8 @@ function App() {
         <Route path="/user/payment/Failed" element={<PaymentFailed />} />
         <Route path="/user/payment/Success" element={<PaymentSuccess />} />
         <Route path="user/add-new-delivery-address/:_id" element={<UpdateDeliveryAddress />} />
+        <Route path="/user/order-details/:_id" element={<Orderdetails />} />
+
         <Route
           path="user/view-Order/shipping-details"
           element={<UShippingDetails />}
