@@ -53,6 +53,15 @@ const dashboard = () => {
     navigate("/user/add-card");
   };
 
+  const handelOrderDetails = (orderid, grcompanyname, userid ) =>{
+    
+    localStorage.setItem("aUorderid", orderid);
+    localStorage.setItem("aUdetailsId", userid);
+    localStorage.setItem("aGradingCompanyName", grcompanyname);
+
+    navigate(`/user/order-details/${orderid}`)
+  }
+
   return (
     <>
       <div className="container-fluid ">
@@ -106,6 +115,7 @@ const dashboard = () => {
                           <th>Status</th>
                           <th>Total Cards</th>
                           <th>View Grades</th>
+                          <th>Order Details</th>
                           <th>Payment Link</th>
                           {/* <th>Order Details</th> */}
                         </tr>
@@ -120,6 +130,11 @@ const dashboard = () => {
                             <td>
                               <Link to="#" className="text-dark">
                                 Grade Link
+                              </Link>{" "}
+                            </td>
+                            <td onClick={ ()=>{handelOrderDetails(order.orderid, order.grcompanyname, order.userid)} } >
+                              <Link to="#" className="text-dark">
+                                Order Details
                               </Link>{" "}
                             </td>
                             <td>
